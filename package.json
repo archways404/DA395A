@@ -1,0 +1,11 @@
+{
+	"name": "core",
+	"version": "1.0.0",
+	"scripts": {
+		"install": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\"",
+		"dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+	},
+	"devDependencies": {
+		"concurrently": "^8.2.2"
+	}
+}

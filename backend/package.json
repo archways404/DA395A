@@ -1,0 +1,23 @@
+{
+	"name": "da395a",
+	"version": "1.0.0",
+	"description": "",
+	"main": "script.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon script.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/archways404/DA395A.git"
+	},
+	"author": "archways404",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/archways404/DA395A/issues"
+	},
+	"homepage": "https://github.com/archways404/DA395A#readme",
+	"dependencies": {
+		"express": "^4.19.2"
+	}
+}
