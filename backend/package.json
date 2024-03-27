@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "script.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "jest",
 		"dev": "nodemon script.js"
 	},
 	"repository": {
@@ -19,5 +19,8 @@
 	"homepage": "https://github.com/archways404/DA395A#readme",
 	"dependencies": {
 		"express": "^4.19.2"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0"
 	}
 }
