@@ -4,6 +4,7 @@ function App() {
 	const [movies, setMovies] = useState([]);
 	const [currentPair, setCurrentPair] = useState([]);
 	const [index, setIndex] = useState(0);
+	const [preferredGenres, setPreferredGenres] = useState([]);
 
 	useEffect(() => {
 		fetch('http://localhost:3000/random-movies')
@@ -15,19 +16,42 @@ function App() {
 	}, []);
 
 	const handleMovieSelection = (selectedMovie) => {
-		// Send the selected movie's genres to /userChoice
 		fetch('http://localhost:3000/userChoice', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ genres: selectedMovie.genres }),
+		}).then(() => {
+			// Load the next pair of movies
+			const nextIndex = index + 2;
+			setIndex(nextIndex);
+			if (nextIndex < movies.length) {
+				setCurrentPair(movies.slice(nextIndex, nextIndex + 2));
+			} else {
+				// Fetch preferred genres and recommended movies when done
+				fetchPreferredGenres();
+				fetchRecommendedMovies();
+			}
 		});
+	};
 
-		// Load the next pair of movies
-		const nextIndex = index + 2;
-		setIndex(nextIndex);
-		setCurrentPair(movies.slice(nextIndex, nextIndex + 2));
+	const fetchPreferredGenres = () => {
+		fetch('http://localhost:3000/preferred-genres')
+			.then((response) => response.json())
+			.then((data) => {
+				setPreferredGenres(data);
+			});
+	};
+
+	const fetchRecommendedMovies = () => {
+		fetch('http://localhost:3000/recommend-movies')
+			.then((response) => response.json())
+			.then((data) => {
+				setMovies(data);
+				setCurrentPair(data.slice(0, 2));
+				setIndex(0);
+			});
 	};
 
 	return (
@@ -47,6 +71,14 @@ function App() {
 						<button onClick={() => handleMovieSelection(movie)}>Select</button>
 					</div>
 				))}
+			</div>
+			<div>
+				<h2>Preferred Genres</h2>
+				<ul>
+					{preferredGenres.map((genre, index) => (
+						<li key={index}>{genre}</li>
+					))}
+				</ul>
 			</div>
 		</div>
 	);
