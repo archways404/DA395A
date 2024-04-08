@@ -18,6 +18,7 @@
 	},
 	"homepage": "https://github.com/archways404/DA395A#readme",
 	"dependencies": {
+		"dotenv": "^16.4.5",
 		"express": "^4.19.2"
 	},
 	"devDependencies": {
