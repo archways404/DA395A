@@ -1,10 +1,19 @@
 const express = require('express');
-const app = express();
-const port = 3000;
 const dotenv = require('dotenv');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { expressjwt: expressJwt } = require('express-jwt');
+const { checkJwt, checkScopes } = require('express-jwt-authz');
+const bodyParser = require('body-parser');
 
 dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const SECRET_KEY = 'your-secret-key';
+
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(
 	cors({
@@ -13,11 +22,20 @@ app.use(
 	})
 );
 
+//? Dummy user data
+const users = [
+	{
+		id: 1,
+		username: 'admin',
+		password: '$2a$10$G/gBH/gljtYaS/HF0r4j2OSbuoS6z51iVlYzqyhdCLsvqC0hbtBhq',
+	}, // hashed password: 'password'
+];
+
+//? API Key and URLs
 const apiKey = process.env.API_KEY;
 const baseUrl = 'https://api.themoviedb.org/3';
 const genresUrl = `${baseUrl}/genre/movie/list?api_key=${apiKey}&language=en-US`;
 const discoverUrl = `${baseUrl}/discover/movie?api_key=${apiKey}&language=en-US&with_original_language=en`;
-
 const options = {
 	method: 'GET',
 	headers: {
@@ -26,6 +44,7 @@ const options = {
 	},
 };
 
+//! TEMPORARY: Store genre scores in memory
 let genreScores = {};
 
 async function fetchGenres() {
@@ -164,7 +183,61 @@ app.get('/preferred-genres', (req, res) => {
 	res.json(getUserPreferredGenres());
 });
 
-app.listen(port, async () => {
+// User registration
+app.post('/register', async (req, res) => {
+	try {
+		const { username, password } = req.body;
+		console.log(username, password);
+		console.log(req.body);
+		const hashedPassword = await bcrypt.hash(password, 10);
+		users.push({ id: users.length + 1, username, password: hashedPassword });
+		console.log(users);
+		res.status(201).send('User registered successfully.');
+	} catch (error) {
+		res.status(500).send('Error registering user.');
+	}
+});
+
+// User login
+app.post('/login', async (req, res) => {
+	try {
+		const { username, password } = req.body;
+		console.log(username, password);
+		console.log(req.body);
+		const user = users.find((u) => u.username === username);
+		if (!user) {
+			return res.status(404).send('User not found.');
+		}
+		const isPasswordValid = await bcrypt.compare(password, user.password);
+		console.log(password, user.password, isPasswordValid);
+		console.log(await bcrypt.hash(password, 10));
+		console.log(await bcrypt.hash('password', 10));
+		if (!isPasswordValid) {
+			return res.status(401).send('Invalid username or password.');
+		}
+		const token = jwt.sign(
+			{ userId: user.id, username: user.username },
+			SECRET_KEY
+		);
+		res.send({ token });
+	} catch (error) {
+		res.status(500).send('Error logging in.');
+	}
+});
+
+app.get(
+	'/protected',
+	expressJwt({ secret: SECRET_KEY, algorithms: ['HS256'] }),
+	function (req, res) {
+		// Check if the user is authorized (e.g., has the required permissions)
+		if (!req.auth.admin) {
+			return res.sendStatus(401); // Unauthorized
+		}
+		res.sendStatus(200); // Authorized
+	}
+);
+
+app.listen(PORT, async () => {
 	await initializeGenreScores();
-	console.log(`Server listening on port ${port}`);
+	console.log(`Server listening on port ${PORT}`);
 });
