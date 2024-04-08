@@ -1,46 +1,54 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
 
 function App() {
-	const [count, setCount] = useState(0);
+	const [movies, setMovies] = useState([]);
+	const [currentPair, setCurrentPair] = useState([]);
+	const [index, setIndex] = useState(0);
+
+	useEffect(() => {
+		fetch('http://localhost:3000/random-movies')
+			.then((response) => response.json())
+			.then((data) => {
+				setMovies(data);
+				setCurrentPair(data.slice(0, 2));
+			});
+	}, []);
+
+	const handleMovieSelection = (selectedMovie) => {
+		// Send the selected movie's genres to /userChoice
+		fetch('http://localhost:3000/userChoice', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ genres: selectedMovie.genres }),
+		});
+
+		// Load the next pair of movies
+		const nextIndex = index + 2;
+		setIndex(nextIndex);
+		setCurrentPair(movies.slice(nextIndex, nextIndex + 2));
+	};
 
 	return (
-		<>
-			<div>
-				<a
-					href="https://vitejs.dev"
-					target="_blank">
-					<img
-						src={viteLogo}
-						className="logo"
-						alt="Vite logo"
-					/>
-				</a>
-				<a
-					href="https://react.dev"
-					target="_blank">
-					<img
-						src={reactLogo}
-						className="logo react"
-						alt="React logo"
-					/>
-				</a>
+		<div>
+			<h1>Choose Your Favorite Movie</h1>
+			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+				{currentPair.map((movie) => (
+					<div
+						key={movie.id}
+						style={{ textAlign: 'center' }}>
+						<img
+							src={movie.image}
+							alt={movie.title}
+							style={{ width: '150px', height: '225px' }}
+						/>
+						<h2>{movie.title}</h2>
+						<button onClick={() => handleMovieSelection(movie)}>Select</button>
+					</div>
+				))}
 			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.jsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		</div>
 	);
 }
 
