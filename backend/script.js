@@ -7,6 +7,10 @@ const { expressjwt: expressJwt } = require('express-jwt');
 const { checkJwt, checkScopes } = require('express-jwt-authz');
 const bodyParser = require('body-parser');
 
+//! TEMP COMMENT
+// IMG LINK FORMAT
+// https://image.tmdb.org/t/p/w500/wVxkR0gPll2L8mb7CWPGK6hPfHj.jpg
+
 dotenv.config();
 
 const app = express();
