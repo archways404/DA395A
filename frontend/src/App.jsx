@@ -63,9 +63,9 @@ function App() {
 						key={movie.id}
 						style={{ textAlign: 'center' }}>
 						<img
-							src={movie.image}
+							src={'https://image.tmdb.org/t/p/w500/' + movie.poster_path}
 							alt={movie.title}
-							style={{ width: '150px', height: '225px' }}
+							style={{ width: '275px', height: '500px' }}
 						/>
 						<h2>{movie.title}</h2>
 						<button onClick={() => handleMovieSelection(movie)}>Select</button>
