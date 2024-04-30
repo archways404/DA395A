@@ -32,17 +32,17 @@ const {
 
 //! ROUTES
 
-// GET MOVIE GENRES
-app.get('/moviegenres', async (req, res) => {
-	const movieGenres = await getMovieGenres();
-	res.json(movieGenres);
-});
-
 // GET MOVIES
 app.get('/movies', async (req, res) => {
 	const data = await getMovies();
 	const movies = await parseMovies(data);
 	res.json(movies);
+});
+
+// GET MOVIE GENRES
+app.get('/movieGenres', async (req, res) => {
+	const movieGenres = await getMovieGenres();
+	res.json(movieGenres);
 });
 
 // GET MOVIES CATEGORIZED BY GENRES
@@ -53,17 +53,17 @@ app.get('/m', async (req, res) => {
 	res.json(categorized_data);
 });
 
-// GET SERIE GENRES
-app.get('/seriegenres', async (req, res) => {
-	const serieGenres = await getSerieGenres();
-	res.json(serieGenres);
-});
-
 // GET SERIES
 app.get('/series', async (req, res) => {
 	const data = await getSeries();
 	const series = await parseSeries(data);
 	res.json(series);
+});
+
+// GET SERIE GENRES
+app.get('/serieGenres', async (req, res) => {
+	const serieGenres = await getSerieGenres();
+	res.json(serieGenres);
 });
 
 app.listen(PORT, async () => {
