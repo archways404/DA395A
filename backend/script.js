@@ -7,7 +7,6 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET_KEY = 'your-secret-key';
 
 app.use(bodyParser.json());
 app.use(express.json());
@@ -17,79 +16,56 @@ app.use(
 	})
 );
 
-//? API Key and URLs
-const apiKey = process.env.API_KEY;
-const baseUrl = 'https://api.themoviedb.org/3';
-const genresUrl = `${baseUrl}/genre/movie/list?api_key=${apiKey}&language=en-US`;
-const discoverUrl = `${baseUrl}/discover/movie?api_key=${apiKey}&language=en-US&with_original_language=en`;
-
-const options = {
-	method: 'GET',
-	headers: {
-		accept: 'application/json',
-		Authorization: `Bearer ${apiKey}`,
-	},
-};
-
-//? IMPORT OF FUNCTIONS
+// DEFINITION OF EXTERNAL FUNCTIONS
 const {
-	fetchGenres,
-	initializeGenreScores,
-	fetchEnglishMovies,
-	getEnglishMoviesWithGenres,
-	updateGenreScores,
-	getUserPreferredGenres,
-	fetchRandomMovies,
-	recommendMoviesBasedOnGenres,
-} = require('./functions/fetchFn');
+	getMovieGenres,
+	getMovies,
+	parseMovies,
+	categorizeByGenres,
+} = require('./functions/movieLogic');
 
-// ROUTES
-app.get('/', async (req, res) => {
-	const movies = await getEnglishMoviesWithGenres();
+const {
+	getSerieGenres,
+	getSeries,
+	parseSeries,
+} = require('./functions/serieLogic');
+
+//! ROUTES
+
+// GET MOVIES
+app.get('/movies', async (req, res) => {
+	const data = await getMovies();
+	const movies = await parseMovies(data);
 	res.json(movies);
 });
 
-app.post('/userChoice', (req, res) => {
-	// Directly access genres from req.body
-	const selectedMovieGenres = req.body.genres;
-
-	if (selectedMovieGenres && selectedMovieGenres.length > 0) {
-		updateGenreScores(selectedMovieGenres);
-		res.json({ success: true, preferredGenres: getUserPreferredGenres() });
-	} else {
-		res.status(400).json({ success: false, message: 'No genres provided' });
-	}
+// GET MOVIE GENRES
+app.get('/movieGenres', async (req, res) => {
+	const movieGenres = await getMovieGenres();
+	res.json(movieGenres);
 });
 
-app.get('/random-movies', async (req, res) => {
-	try {
-		const randomMovies = await fetchRandomMovies(10);
-		res.json(randomMovies);
-	} catch (error) {
-		console.error('Error fetching random movies:', error);
-		res.status(500).send('Error fetching random movies');
-	}
+// GET MOVIES CATEGORIZED BY GENRES
+app.get('/m', async (req, res) => {
+	const raw_data = await getMovies();
+	const parsed_data = await parseMovies(raw_data);
+	const categorized_data = await categorizeByGenres(parsed_data);
+	res.json(categorized_data);
 });
 
-app.get('/recommend-movies', async (req, res) => {
-	try {
-		const userPreferences = getUserPreferredGenres(); // Assume this function gives the top genres
-		const recommendedMovies = await recommendMoviesBasedOnGenres(
-			userPreferences,
-			2
-		);
-		res.json(recommendedMovies);
-	} catch (error) {
-		console.error('Error recommending movies:', error);
-		res.status(500).send('Error recommending movies');
-	}
+// GET SERIES
+app.get('/series', async (req, res) => {
+	const data = await getSeries();
+	const series = await parseSeries(data);
+	res.json(series);
 });
 
-app.get('/preferred-genres', (req, res) => {
-	res.json(getUserPreferredGenres());
+// GET SERIE GENRES
+app.get('/serieGenres', async (req, res) => {
+	const serieGenres = await getSerieGenres();
+	res.json(serieGenres);
 });
 
 app.listen(PORT, async () => {
-	await initializeGenreScores();
 	console.log(`Server listening on port ${PORT}`);
 });
