@@ -11,18 +11,29 @@ const options = {
 
 async function getMovieGenres() {
 	const genresUrl = `${baseUrl}/genre/movie/list?language=en-US`;
-	const response = await fetch(genresUrl, options);
-	const data = await response.json();
-	console.log(data);
-	return data.genres;
+	try {
+		const response = await fetch(genresUrl, options);
+		const data = await response.json();
+		console.log(data);
+		return data.genres;
+	} catch (error) {
+		console.error(error);
+		return error;
+	}
 }
 
 async function getMovies() {
-	const discoverUrl = `${baseUrl}/discover/movie?language=en-US&with_original_language=en`;
-	const response = await fetch(discoverUrl, options);
-	const data = await response.json();
-	console.log(data);
-	return data;
+	const randomPage = getRandomNumber();
+	const discoverUrl = `${baseUrl}/discover/movie?language=en-US&with_original_language=en&page=${randomPage}&sort_by=popularity.desc`;
+	try {
+		const response = await fetch(discoverUrl, options);
+		const data = await response.json();
+		console.log(data);
+		return data;
+	} catch (error) {
+		console.error(error);
+		return error;
+	}
 }
 
 async function parseMovies(data) {
@@ -55,6 +66,10 @@ function categorizeByGenres(movies) {
 	});
 
 	return genreMap;
+}
+
+function getRandomNumber() {
+	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 }
 
 // Export the functions to be used in other files
