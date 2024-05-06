@@ -30,6 +30,11 @@ const {
 	parseSeries,
 } = require('./functions/serieLogic');
 
+const {
+	parseGenreData,
+	allocateMovieSlots,
+} = require('./functions/algorithmLogic');
+
 //? ROUTES
 
 // GET MOVIES
@@ -54,17 +59,19 @@ app.get('/m', async (req, res) => {
 });
 
 // POST MOVIE ALGORITHM -> //! WORK IN PROGRESS
-app.post('/MovieAlgorithm', (req, res) => {
+app.post('/MovieAlgorithm', async (req, res) => {
 	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
 	const topGenres = req.body.sort((a, b) => b.count - a.count).slice(0, 3);
 	console.log('Top 3 Genres:', topGenres);
-	res.json({
-		message: 'Data received successfully',
-		topGenres,
-	});
+
+	//! TEMP NAMES
+	const test = await parseGenreData(req.body);
+	const test2 = await allocateMovieSlots(test, 15);
+	console.log('Test2:', test2);
+	res.json(test2);
 });
 
 

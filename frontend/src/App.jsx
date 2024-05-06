@@ -6,7 +6,8 @@ function MovieInitializer() {
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [selectionCount, setSelectionCount] = useState(0);
-	const [submissionComplete, setSubmissionComplete] = useState(false);
+  const [submissionComplete, setSubmissionComplete] = useState(false);
+	const [algoritmData, setAlgorithmData] = useState([]);
 
 	useEffect(() => {
 		const storedGenres = sessionStorage.getItem('movieGenres');
@@ -81,6 +82,7 @@ function MovieInitializer() {
 	};
 
 	const submitGenreCounts = () => {
+		setSubmissionComplete(true);
 		fetch('http://localhost:3000/MovieAlgorithm', {
 			method: 'POST',
 			headers: {
@@ -96,7 +98,7 @@ function MovieInitializer() {
 			})
 			.then((data) => {
 				console.log('Success:', data);
-				setSubmissionComplete(true);
+				setAlgorithmData(data);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -115,6 +117,24 @@ function MovieInitializer() {
 					<p className="text-center">
 						Your genre preferences have been submitted successfully.
 					</p>
+					{/* Display algorithm data */}
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						{algoritmData.map((movie) => (
+							<div
+								key={movie.id}
+								className="text-center">
+								<img
+									src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+									alt={movie.title}
+									className="w-full h-auto"
+								/>
+								<p className="text-lg my-2">{movie.title}</p>
+								<p>Popularity: {movie.popularity}</p>
+								<p>Overview: {movie.overview}</p>
+								<p>Release Date: {movie.release_date}</p>
+							</div>
+						))}
+					</div>
 				</div>
 			) : (
 				<>
