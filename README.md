@@ -1,2 +1,46 @@
 # DA395A - README
 
+## Movie Recommendation System
+
+This project implements a movie recommendation system where users can select their favorite movies, and the through our API, the system will recommend additional movies based on their selections. It uses data from The Movie Database (TMDb) API to fetch movies and genres.
+
+## Features
+
+- **Genre Selection:** Users can select their favorite movies from a list of genres.
+- **Movie Selection:** Users can browse through a selection of movies and select their favorites.
+- **Recommendation Algorithm:** The system uses an algorithm to recommend additional movies based on user selections and genre preferences.
+
+## Technologies Used
+
+- **Backend:** Node.js, Express.js
+- **Frontend:** React.js
+- **API:** The Movie Database (TMDb) API
+
+## Setup Instructions
+
+1. Clone the repository to your local machine.
+2. Install dependencies for both the backend and frontend:
+    ```
+    npm install
+    ```
+3. Start the development server:
+    ```
+    npm run dev
+    ```
+4. Access the application at `http://localhost:5173` in your web browser.
+
+## Usage
+
+1. Upon accessing the application, users will be prompted to select their favorite movies from a list of genres.
+2. After selecting genres, users can browse through a selection of movies and choose their favorites.
+3. Once enough selections have been made, the system will generate recommendations based on user preferences.
+
+## Contributors
+
+- Philip (@archways404)
+- Alexandra (@gorillagripcore)
+- TBD (@TBD)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
