@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 
 function MovieInitializer() {
@@ -5,6 +6,7 @@ function MovieInitializer() {
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [selectionCount, setSelectionCount] = useState(0);
+	const [submissionComplete, setSubmissionComplete] = useState(false);
 
 	useEffect(() => {
 		const storedGenres = sessionStorage.getItem('movieGenres');
@@ -37,7 +39,13 @@ function MovieInitializer() {
 		selectedMovie.genreIds.forEach((id) => {
 			incrementCount(id);
 		});
-		setSelectionCount((prev) => prev + 1);
+		const newSelectionCount = selectionCount + 1;
+		setSelectionCount(newSelectionCount);
+
+		if (newSelectionCount >= 5) {
+			submitGenreCounts();
+		}
+
 		moveToNextPair();
 	};
 
@@ -72,11 +80,43 @@ function MovieInitializer() {
 		});
 	};
 
+	const submitGenreCounts = () => {
+		fetch('http://localhost:3000/MovieAlgorithm', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(genres),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
+			})
+			.then((data) => {
+				console.log('Success:', data);
+				setSubmissionComplete(true);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				alert('An error occurred, please try again later.');
+			});
+	};
 	const currentPair = movies.slice(currentIndex, currentIndex + 2);
 
 	return (
 		<div className="container mx-auto px-4">
-			{selectionCount < 5 ? (
+			{submissionComplete ? (
+				<div>
+					<h2 className="text-center text-xl font-bold my-4">
+						Thank you for your selection!
+					</h2>
+					<p className="text-center">
+						Your genre preferences have been submitted successfully.
+					</p>
+				</div>
+			) : (
 				<>
 					<h1 className="text-center text-2xl font-bold my-4">
 						Select Your Favorite Movie
@@ -112,20 +152,6 @@ function MovieInitializer() {
 						</button>
 					</div>
 				</>
-			) : (
-				<div>
-					<h2 className="text-center text-xl font-bold mb-2">Genre Counters</h2>
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{genres.map((genre) => (
-							<div
-								key={genre.id}
-								className="text-center">
-								<span className="font-semibold">{genre.name}</span>:{' '}
-								{genre.count}
-							</div>
-						))}
-					</div>
-				</div>
 			)}
 		</div>
 	);
