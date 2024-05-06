@@ -14,7 +14,6 @@ async function getMovieGenres() {
 	try {
 		const response = await fetch(genresUrl, options);
 		const data = await response.json();
-		console.log(data);
 		return data.genres;
 	} catch (error) {
 		console.error(error);
@@ -28,7 +27,6 @@ async function getMovies() {
 	try {
 		const response = await fetch(discoverUrl, options);
 		const data = await response.json();
-		console.log(data);
 		return data;
 	} catch (error) {
 		console.error(error);
@@ -37,7 +35,6 @@ async function getMovies() {
 }
 
 async function parseMovies(data) {
-	// Extracting specific data from each movie in the results array
 	const movies = data.results.map((movie) => ({
 		genreIds: movie.genre_ids,
 		originalTitle: movie.original_title,
@@ -45,7 +42,6 @@ async function parseMovies(data) {
 			? `https://image.tmdb.org/t/p/original${movie.poster_path}`
 			: null,
 	}));
-	console.log(movies);
 	return movies;
 }
 
@@ -72,7 +68,6 @@ function getRandomNumber() {
 	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 }
 
-// Export the functions to be used in other files
 module.exports = {
 	getMovieGenres,
 	getMovies,
