@@ -58,25 +58,23 @@ app.get('/m', async (req, res) => {
 	res.json(categorized_data);
 });
 
-// POST MOVIE ALGORITHM -> //! WORK IN PROGRESS
+// POST MOVIE ALGORITHM
 app.post('/MovieAlgorithm', async (req, res) => {
 	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
-	/*
-  * TEMP DO NOT REMOVE
-	const topGenres = req.body.sort((a, b) => b.count - a.count).slice(0, 3);
-	console.log('Top 3 Genres:', topGenres);
-  */
-
-	//! TEMP NAMES
-	const test = await parseGenreData(req.body);
-	const test2 = await allocateMovieSlots(test, 25);
-	console.log('Test2:', test2);
-	res.json(test2);
+	const preParsedData = await parseGenreData(req.body);
+	const parsedData = await allocateMovieSlots(preParsedData, 25);
+	console.log('parsedData:', parsedData);
+	res.json(parsedData);
 });
 
+// POST CATEGORY DATA -> //! WORK IN PROGRESS
+app.post('/home/movies', async (req, res) => {
+	console.log(req.body);
+	res.json(req.body);
+});
 
 // GET SERIES
 app.get('/series', async (req, res) => {

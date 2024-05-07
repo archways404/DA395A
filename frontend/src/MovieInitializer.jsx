@@ -2,16 +2,16 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 
-function MovieInitializer({ onGenresSubmission }) {
+function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 	const [genres, setGenres] = useState([]);
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [selectionCount, setSelectionCount] = useState(0);
+
 	useEffect(() => {
 		const storedGenres = localStorage.getItem('movieGenres');
 		if (storedGenres) {
 			setGenres(JSON.parse(storedGenres));
-			console.log('error');
 		} else {
 			fetch('http://localhost:3000/movieGenres')
 				.then((response) => response.json())
@@ -25,20 +25,23 @@ function MovieInitializer({ onGenresSubmission }) {
 						JSON.stringify(initializedGenres)
 					);
 					setGenres(initializedGenres);
-				});
+				})
+				.catch((error) => console.error('Failed to fetch genres:', error));
 		}
 	}, []);
 
 	useEffect(() => {
 		fetch('http://localhost:3000/movies')
 			.then((response) => response.json())
-			.then(setMovies);
+			.then(setMovies)
+			.catch((error) => console.error('Failed to fetch movies:', error));
 	}, []);
 
 	const handleSelectMovie = (selectedMovie) => {
 		selectedMovie.genreIds.forEach((id) => incrementCount(id));
 		const newSelectionCount = selectionCount + 1;
 		setSelectionCount(newSelectionCount);
+		onUpdateSelectionCount(newSelectionCount);
 
 		if (newSelectionCount >= 5) {
 			submitGenreCounts();
@@ -62,7 +65,8 @@ function MovieInitializer({ onGenresSubmission }) {
 			.then((newMovies) => {
 				setMovies((currentMovies) => [...currentMovies, ...newMovies]);
 				setCurrentIndex(movies.length);
-			});
+			})
+			.catch((error) => console.error('Failed to fetch more movies:', error));
 	};
 
 	const incrementCount = (id) => {
