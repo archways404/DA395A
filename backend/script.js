@@ -91,6 +91,3 @@ app.get('/serieGenres', async (req, res) => {
 app.listen(PORT, async () => {
 	console.log(`Server listening on port ${PORT}`);
 });
-
-
-module.exports = app;  // Export the app for use in other files such as tests

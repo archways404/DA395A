@@ -1,18 +1,17 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 
-function MovieInitializer() {
+function MovieInitializer({ onGenresSubmission }) {
 	const [genres, setGenres] = useState([]);
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [selectionCount, setSelectionCount] = useState(0);
-  const [submissionComplete, setSubmissionComplete] = useState(false);
-	const [algoritmData, setAlgorithmData] = useState([]);
-
 	useEffect(() => {
-		const storedGenres = sessionStorage.getItem('movieGenres');
+		const storedGenres = localStorage.getItem('movieGenres');
 		if (storedGenres) {
 			setGenres(JSON.parse(storedGenres));
+			console.log('error');
 		} else {
 			fetch('http://localhost:3000/movieGenres')
 				.then((response) => response.json())
@@ -21,7 +20,7 @@ function MovieInitializer() {
 						...genre,
 						count: 0,
 					}));
-					sessionStorage.setItem(
+					localStorage.setItem(
 						'movieGenres',
 						JSON.stringify(initializedGenres)
 					);
@@ -37,9 +36,7 @@ function MovieInitializer() {
 	}, []);
 
 	const handleSelectMovie = (selectedMovie) => {
-		selectedMovie.genreIds.forEach((id) => {
-			incrementCount(id);
-		});
+		selectedMovie.genreIds.forEach((id) => incrementCount(id));
 		const newSelectionCount = selectionCount + 1;
 		setSelectionCount(newSelectionCount);
 
@@ -53,7 +50,7 @@ function MovieInitializer() {
 	const moveToNextPair = () => {
 		const nextIndex = currentIndex + 2;
 		if (nextIndex >= movies.length) {
-			fetchMoreMovies(); // Function to fetch new movies
+			fetchMoreMovies();
 		} else {
 			setCurrentIndex(nextIndex);
 		}
@@ -76,104 +73,67 @@ function MovieInitializer() {
 				}
 				return genre;
 			});
-			sessionStorage.setItem('movieGenres', JSON.stringify(updatedGenres));
+			localStorage.setItem('movieGenres', JSON.stringify(updatedGenres));
 			return updatedGenres;
 		});
 	};
 
 	const submitGenreCounts = () => {
-		setSubmissionComplete(true);
-		fetch('http://localhost:3000/MovieAlgorithm', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(genres),
-		})
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				return response.json();
-			})
-			.then((data) => {
-				console.log('Success:', data);
-				setAlgorithmData(data);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-				alert('An error occurred, please try again later.');
-			});
+		localStorage.setItem('movieGenres', JSON.stringify(genres));
+		onGenresSubmission(genres);
 	};
+
 	const currentPair = movies.slice(currentIndex, currentIndex + 2);
 
 	return (
-		<div className="container mx-auto px-4">
-			{submissionComplete ? (
-				<div>
-					<h2 className="text-center text-xl font-bold my-4">
-						Thank you for your selection!
-					</h2>
-					<p className="text-center">
-						Your genre preferences have been submitted successfully.
-					</p>
-					{/* Display algorithm data */}
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{algoritmData.map((movie) => (
-							<div
-								key={movie.id}
-								className="text-center">
-								<img
-									src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-									alt={movie.title}
-									className="w-full h-auto"
-								/>
-								<p className="text-lg my-2">{movie.title}</p>
-								<p>Popularity: {movie.popularity}</p>
-								<p>Overview: {movie.overview}</p>
-								<p>Release Date: {movie.release_date}</p>
-							</div>
-						))}
-					</div>
+		<>
+			<div className="container mx-auto px-4">
+				<div
+					className="selection-counter"
+					style={{
+						position: 'fixed',
+						top: '10px',
+						right: '10px',
+						fontSize: '16px',
+						backgroundColor: 'lightgray',
+						padding: '5px 10px',
+						borderRadius: '10px',
+					}}>
+					Selected: {selectionCount} / 5
 				</div>
-			) : (
-				<>
-					<h1 className="text-center text-2xl font-bold my-4">
-						Select Your Favorite Movie
-					</h1>
-					<div className="flex justify-between items-start mb-4">
-						{currentPair.map((movie, index) => (
-							<div
-								key={movie.originalTitle}
-								className="w-1/2 px-2">
-								<img
-									src={movie.posterPath}
-									alt={movie.originalTitle}
-									className="w-1/2 h-auto mx-auto"
-								/>
-								<p className="text-center text-lg my-2">
-									{movie.originalTitle}
-								</p>
-								<div className="text-center">
-									<button
-										onClick={() => handleSelectMovie(movie)}
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-										Select
-									</button>
-								</div>
+				<h1 className="text-center text-2xl font-bold my-4">
+					Select Your Favorite Movie
+				</h1>
+				<div className="flex justify-between items-start mb-4">
+					{currentPair.map((movie, index) => (
+						<div
+							key={movie.originalTitle}
+							className="w-1/2 px-2">
+							<img
+								src={movie.posterPath}
+								alt={movie.originalTitle}
+								className="w-1/2 h-auto mx-auto"
+							/>
+							<p className="text-center text-lg my-2">{movie.originalTitle}</p>
+							<div className="text-center">
+								<button
+									onClick={() => handleSelectMovie(movie)}
+									className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+									Select
+								</button>
 							</div>
-						))}
-					</div>
-					<div className="text-center mb-4">
-						<button
-							onClick={moveToNextPair}
-							className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-							Skip
-						</button>
-					</div>
-				</>
-			)}
-		</div>
+						</div>
+					))}
+				</div>
+				<div className="text-center mb-4">
+					<button
+						onClick={moveToNextPair}
+						className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+						Skip
+					</button>
+				</div>
+			</div>
+		</>
 	);
 }
 
