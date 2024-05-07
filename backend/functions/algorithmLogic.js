@@ -53,7 +53,9 @@ async function fetchMoviesByGenre(genreId, count) {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
 		const data = await response.json();
-		return data.results.slice(0, count);
+		const scrambledData = await shuffleArray(data.results.slice(0, count));
+		console.log('post-scramble', scrambledData);
+		return scrambledData;
 	} catch (error) {
 		console.error('Error fetching movies:', error);
 		return [];
@@ -62,6 +64,14 @@ async function fetchMoviesByGenre(genreId, count) {
 
 function getRandomNumber() {
 	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+}
+
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
 }
 
 module.exports = {

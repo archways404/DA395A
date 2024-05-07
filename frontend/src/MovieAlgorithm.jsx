@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
@@ -23,17 +24,17 @@ function MovieAlgorithm({ genres }) {
 				setLoadingMessage(`Loading${'.'.repeat(dots)}`);
 			}
 		}, 300);
-
 		return () => clearInterval(interval);
 	}, [loading]);
 
 	const fetchMovies = (genres) => {
+		if (!loading && movies.length - currentIndex > 5) {
+			return;
+		}
 		setLoading(true);
 		fetch('http://localhost:3000/MovieAlgorithm', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(genres),
 		})
 			.then((response) => {
@@ -42,44 +43,35 @@ function MovieAlgorithm({ genres }) {
 			})
 			.then((data) => {
 				setMovies((prev) => [...prev, ...data]);
-				setLoading(false);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
 				setError('An error occurred, please try again later.');
+			})
+			.finally(() => {
 				setLoading(false);
 			});
 	};
 
 	const handleSelectMovie = (selectedMovie) => {
-		console.log('Selected Movie:', selectedMovie);
-		if (selectedMovie.genre_ids && Array.isArray(selectedMovie.genre_ids)) {
-			const newGenres = updatedGenres.map((genre) => ({
-				...genre,
-				count: selectedMovie.genre_ids.includes(genre.id)
-					? genre.count + 1
-					: genre.count,
-			}));
-			setUpdatedGenres(newGenres);
-			console.log('Updated Genres:', newGenres);
-		} else {
-			console.error(
-				"Selected movie does not have a genre_ids property or it's not an array:",
-				selectedMovie
-			);
-		}
+		const newGenres = updatedGenres.map((genre) => ({
+			...genre,
+			count: selectedMovie.genre_ids.includes(genre.id)
+				? genre.count + 1
+				: genre.count,
+		}));
+		setUpdatedGenres(newGenres);
+		localStorage.setItem('movieGenres', JSON.stringify(newGenres));
 		moveToNextPair();
 	};
 
 	const moveToNextPair = () => {
 		const nextIndex = currentIndex + 2;
-		if (nextIndex >= movies.length - 2) {
+		setCurrentIndex(nextIndex);
+		if (nextIndex >= movies.length - 5) {
 			fetchMovies(updatedGenres);
 		}
-		setCurrentIndex(nextIndex);
 	};
-
-	const currentPair = movies.slice(currentIndex, currentIndex + 2);
 
 	if (loading) {
 		return (
@@ -89,6 +81,8 @@ function MovieAlgorithm({ genres }) {
 		);
 	}
 
+	const currentPair = movies.slice(currentIndex, currentIndex + 2);
+
 	return (
 		<>
 			<div className="container mx-auto px-4">
@@ -97,7 +91,7 @@ function MovieAlgorithm({ genres }) {
 				) : (
 					<>
 						<h1 className="text-center text-2xl font-bold my-4">
-							Select your favorite movie
+							Continue selecting your favorite movie(s)
 						</h1>
 						<h2 className="text-center text-1xl font-bold my-4">
 							The more movies you give our Algorithm, the better the

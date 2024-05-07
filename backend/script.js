@@ -64,12 +64,15 @@ app.post('/MovieAlgorithm', async (req, res) => {
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
+	/*
+  * TEMP DO NOT REMOVE
 	const topGenres = req.body.sort((a, b) => b.count - a.count).slice(0, 3);
 	console.log('Top 3 Genres:', topGenres);
+  */
 
 	//! TEMP NAMES
 	const test = await parseGenreData(req.body);
-	const test2 = await allocateMovieSlots(test, 15);
+	const test2 = await allocateMovieSlots(test, 25);
 	console.log('Test2:', test2);
 	res.json(test2);
 });
