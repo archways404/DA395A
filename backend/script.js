@@ -30,6 +30,11 @@ const {
 	parseSeries,
 } = require('./functions/serieLogic');
 
+const {
+	parseGenreData,
+	allocateMovieSlots,
+} = require('./functions/algorithmLogic');
+
 //? ROUTES
 
 // GET MOVIES
@@ -53,20 +58,23 @@ app.get('/m', async (req, res) => {
 	res.json(categorized_data);
 });
 
-// POST MOVIE ALGORITHM -> //! WORK IN PROGRESS
-app.post('/MovieAlgorithm', (req, res) => {
+// POST MOVIE ALGORITHM
+app.post('/MovieAlgorithm', async (req, res) => {
 	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
-	const topGenres = req.body.sort((a, b) => b.count - a.count).slice(0, 3);
-	console.log('Top 3 Genres:', topGenres);
-	res.json({
-		message: 'Data received successfully',
-		topGenres,
-	});
+	const preParsedData = await parseGenreData(req.body);
+	const parsedData = await allocateMovieSlots(preParsedData, 25);
+	console.log('parsedData:', parsedData);
+	res.json(parsedData);
 });
 
+// POST CATEGORY DATA -> //! WORK IN PROGRESS
+app.post('/home/movies', async (req, res) => {
+	console.log(req.body);
+	res.json(req.body);
+});
 
 // GET SERIES
 app.get('/series', async (req, res) => {
@@ -84,6 +92,3 @@ app.get('/serieGenres', async (req, res) => {
 app.listen(PORT, async () => {
 	console.log(`Server listening on port ${PORT}`);
 });
-
-
-module.exports = app;  // Export the app for use in other files such as tests
