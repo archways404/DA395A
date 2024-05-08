@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-image: url("https://hungarytoday.hu/wp-content/uploads/2023/08/pexels-tima-miroshnichenko-7991579-scaled.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "Montserrat", sans-serif;
+}
+
+.imgborder {
+  border: 3px solid black;
+}
+
+.moviebox {
+  padding: 30px 0 10px;
+  background-color: rgba(255, 242, 233, 0.658);
+  border-radius: 20px;
+}
+
+.movietext {
+  font-weight: 600;
+}
+
+.selectbutton {
+  background-color: #990011;
+  border-radius: 8px;
+  margin: 15px;
+}
