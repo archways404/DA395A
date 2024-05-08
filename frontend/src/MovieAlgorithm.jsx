@@ -90,13 +90,16 @@ function MovieAlgorithm({ genres }) {
           <p>{error}</p>
         ) : (
           <>
-            <h1 className="text-center text-2xl font-bold my-4">
-              Continue selecting your favorite movie(s)
-            </h1>
-            <h2 className="text-center text-1xl font-bold my-4">
-              The more movies you give our Algorithm, the better the
-              recommendations will be!
-            </h2>
+            <div className="titlecard">
+              <h1 className="text-center text-2xl my-4">
+                Continue selecting your favorite movie(s)
+              </h1>
+              <h2 className="text-center text-1xl my-4">
+                The more movies you give our Algorithm, the better the
+                recommendations will be!
+              </h2>
+            </div>
+
             <div className="flex justify-between items-start mb-4 moviebox">
               {currentPair.map((movie, index) => (
                 <div key={movie.id} className="w-1/2 px-2">
@@ -112,7 +115,7 @@ function MovieAlgorithm({ genres }) {
                   <div className="text-center">
                     <button
                       onClick={() => handleSelectMovie(movie)}
-                      className="selectbutton text-white py-2 px-4"
+                      className="button text-white py-2 px-4 neon-text"
                     >
                       Select
                     </button>
@@ -123,7 +126,7 @@ function MovieAlgorithm({ genres }) {
             <div className="text-center mb-4">
               <button
                 onClick={moveToNextPair}
-                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                className="button text-white py-2 px-4 skip"
               >
                 Skip
               </button>
