@@ -35,22 +35,25 @@ const {
 	allocateMovieSlots,
 } = require('./functions/algorithmLogic');
 
-//? ROUTES
+const {
+	getTopCategories,
+	getHomeMovies,
+} = require('./functions/movieHomeLogic');
 
-// GET MOVIES
+// GET -> MOVIES
 app.get('/movies', async (req, res) => {
 	const data = await getMovies();
 	const movies = await parseMovies(data);
 	res.json(movies);
 });
 
-// GET MOVIE GENRES
+// GET -> MOVIE GENRES
 app.get('/movieGenres', async (req, res) => {
 	const movieGenres = await getMovieGenres();
 	res.json(movieGenres);
 });
 
-// GET MOVIES CATEGORIZED BY GENRES
+// GET -> MOVIES CATEGORIZED BY GENRES
 app.get('/m', async (req, res) => {
 	const raw_data = await getMovies();
 	const parsed_data = await parseMovies(raw_data);
@@ -58,7 +61,7 @@ app.get('/m', async (req, res) => {
 	res.json(categorized_data);
 });
 
-// POST MOVIE ALGORITHM
+// POST -> MOVIE ALGORITHM
 app.post('/MovieAlgorithm', async (req, res) => {
 	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
@@ -70,20 +73,22 @@ app.post('/MovieAlgorithm', async (req, res) => {
 	res.json(parsedData);
 });
 
-// POST CATEGORY DATA -> //! WORK IN PROGRESS
+// POST -> HOME MOVIE
 app.post('/home/movies', async (req, res) => {
-	console.log(req.body);
-	res.json(req.body);
+	const requestBody = req.body;
+	const topCategories = await getTopCategories(requestBody, 5);
+	const parsedMovies = await getHomeMovies(topCategories);
+	res.json(parsedMovies);
 });
 
-// GET SERIES
+// GET -> SERIES
 app.get('/series', async (req, res) => {
 	const data = await getSeries();
 	const series = await parseSeries(data);
 	res.json(series);
 });
 
-// GET SERIE GENRES
+// GET -> SERIE GENRES
 app.get('/serieGenres', async (req, res) => {
 	const serieGenres = await getSerieGenres();
 	res.json(serieGenres);

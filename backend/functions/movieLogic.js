@@ -1,5 +1,5 @@
 const apiKey = process.env.API_KEY;
-const baseUrl = 'https://api.themoviedb.org/3';
+const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
 	method: 'GET',
@@ -10,7 +10,7 @@ const options = {
 };
 
 async function getMovieGenres() {
-	const genresUrl = `${baseUrl}/genre/movie/list?language=en-US`;
+	const genresUrl = `${baseURL}/genre/movie/list?language=en-US`;
 	try {
 		const response = await fetch(genresUrl, options);
 		const data = await response.json();
@@ -23,7 +23,7 @@ async function getMovieGenres() {
 
 async function getMovies() {
 	const randomPage = getRandomNumber();
-	const discoverUrl = `${baseUrl}/discover/movie?language=en-US&with_original_language=en&page=${randomPage}&sort_by=popularity.desc`;
+	const discoverUrl = `${baseURL}/discover/movie?language=en-US&with_original_language=en&page=${randomPage}&sort_by=popularity.desc`;
 	try {
 		const response = await fetch(discoverUrl, options);
 		const data = await response.json();

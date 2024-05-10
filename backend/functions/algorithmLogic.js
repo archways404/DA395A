@@ -1,5 +1,5 @@
 const apiKey = process.env.API_KEY;
-const baseUrl = 'https://api.themoviedb.org/3';
+const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
 	method: 'GET',

@@ -1,5 +1,5 @@
 const apiKey = process.env.API_KEY;
-const baseUrl = 'https://api.themoviedb.org/3';
+const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
 	method: 'GET',
@@ -9,63 +9,45 @@ const options = {
 	},
 };
 
-async function getMovieGenres() {
-	const genresUrl = `${baseUrl}/genre/movie/list?language=en-US`;
+function getTopCategories(data, numCategories) {
+	const sorted = data.sort((a, b) => b.count - a.count);
+	return sorted.slice(0, numCategories);
+}
+
+async function fetchMoviesByGenre(genreId, page) {
+	const movieURL = `${baseURL}/discover/movie?api_key=${apiKey}&language=en-US&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`;
 	try {
-		const response = await fetch(genresUrl, options);
+		const response = await fetch(movieURL, options);
 		const data = await response.json();
-		return data.genres;
+		return data.results;
 	} catch (error) {
-		console.error(error);
-		return error;
+		console.error('Error fetching movies by genre:', error);
+		return [];
 	}
 }
 
-async function getMovies() {
-	const randomPage = getRandomNumber();
-	const discoverUrl = `${baseUrl}/discover/movie?language=en-US&with_original_language=en&page=${randomPage}&sort_by=popularity.desc`;
-	try {
-		const response = await fetch(discoverUrl, options);
-		const data = await response.json();
-		return data;
-	} catch (error) {
-		console.error(error);
-		return error;
+async function getHomeMovies(topCategories) {
+	const allMovies = {};
+	for (const category of topCategories) {
+		const randomPage = getRandomNumber();
+		const movies = await fetchMoviesByGenre(category.id, randomPage);
+		allMovies[category.name] = movies.map((movie) => ({
+			originalTitle: movie.title,
+			posterPath: movie.poster_path
+				? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+				: null,
+			overview: movie.overview,
+			releaseDate: movie.release_date,
+		}));
 	}
-}
-
-async function parseMovies(data) {
-	const movies = data.results.map((movie) => ({
-		genreIds: movie.genre_ids,
-		originalTitle: movie.original_title,
-		posterPath: movie.poster_path
-			? `https://image.tmdb.org/t/p/original${movie.poster_path}`
-			: null,
-	}));
-	return movies;
-}
-
-function categorizeByGenres(movies) {
-	const genreMap = {};
-
-	movies.forEach((movie) => {
-		movie.genreIds.forEach((genreId) => {
-			if (!genreMap[genreId]) {
-				genreMap[genreId] = [];
-			}
-			genreMap[genreId].push({
-				genreIds: movie.genre_ids,
-				originalTitle: movie.originalTitle,
-				posterPath: movie.posterPath,
-			});
-		});
-	});
-
-	return genreMap;
+	return allMovies;
 }
 
 function getRandomNumber() {
 	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 }
 
-module.exports = {};
+module.exports = {
+	getTopCategories,
+	getHomeMovies,
+};
