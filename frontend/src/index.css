@@ -59,3 +59,15 @@ body {
 .top {
   margin: 5px;
 }
+
+.loadingtext {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.categorybox {
+  padding: 30px 20px 0px;
+  background-color: rgba(255, 242, 233, 0.658);
+  border-radius: 20px;
+  color: black;
+}
