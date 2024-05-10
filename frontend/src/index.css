@@ -71,3 +71,19 @@ body {
   border-radius: 20px;
   color: black;
 }
+
+.infocard {
+  border-radius: 10px;
+}
+
+.year {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 15px;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  margin-top: 25px;
+}

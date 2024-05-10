@@ -82,12 +82,12 @@ function MovieHome({ genres }) {
                   alt={movie.originalTitle}
                   className="w-full imgborder h-auto rounded-lg shadow-lg"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
-                  <h3 className="text-center pb-10 font-bold">
+                <div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
+                  <h3 className="text-center pb-10 font-bold title">
                     {movie.originalTitle}
                   </h3>
                   <p className="text-xs">{movie.overview}</p>
-                  <p className="text-m pt-10 italic">
+                  <p className="text-m pt-10 italic year">
                     {movie.releaseDate.slice(0, 4)}
                   </p>
                 </div>
