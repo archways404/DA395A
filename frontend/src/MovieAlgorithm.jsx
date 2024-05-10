@@ -75,7 +75,7 @@ function MovieAlgorithm({ genres }) {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 text-center">
+      <div className="container loadingtext mx-auto px-4 text-center">
         <h2>{loadingMessage}</h2>
       </div>
     );

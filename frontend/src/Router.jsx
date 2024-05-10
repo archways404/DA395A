@@ -54,7 +54,7 @@ function Router() {
             onClick={() => setDisplay("home")}
             className="text-white font-bold py-2 px-4 top button"
           >
-            Movie Home
+            Movies
           </button>
         </>
       )}
