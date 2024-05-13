@@ -41,10 +41,9 @@ This project implements a movie recommendation system where users can select the
 3. Once enough selections have been made, the system will generate recommendations based on user preferences.
 
 ## Contributors
-
-- Philip (@archways404)
-- Alexandra (@gorillagripcore)
-- TBD (@TBD)
+- [archways404](https://github.com/archways404) - Philip
+- [gorillagripcore](https://github.com/gorillagripcore) - Alexandra
+- [TBD](https://github.com/TBD) - TBD
 
 ## License
 
