@@ -20,14 +20,14 @@ This project implements a movie recommendation system where users can select the
 
 1. Clone the repository to your local machine.
 2. Install dependencies for both the backend and frontend:
-    ```
-    npm install
-    ```
-3. Start the development server:
-    ```
-    npm run dev
-    ```
-4. Access the application at `http://localhost:5173` in your web browser.
+```
+npm install
+```
+1. Start the development server:
+```
+npm run dev
+```
+1. Access the application at `http://localhost:5173` in your web browser.
 
 ## Documentation
 
