@@ -2,7 +2,7 @@
 
 ## Movie Recommendation System
 
-This project implements a movie recommendation system where users can select their favorite movies, and the through our API, the system will recommend additional movies based on their selections. It uses data from The Movie Database (TMDb) API to fetch movies and genres.
+This project implements a movie recommendation system where users can select their favorite movies, and through our API, the system will recommend additional movies based on their selections. It uses data from The Movie Database (TMDb) API to fetch movies and genres.
 
 ## Features
 
@@ -28,6 +28,11 @@ This project implements a movie recommendation system where users can select the
     npm run dev
     ```
 4. Access the application at `http://localhost:5173` in your web browser.
+
+## Documentation
+
+- [API Routes](API_ROUTES.md) - Detailed information on the API endpoints available.
+- [Function Descriptions](FUNCTIONS.md) - In-depth documentation of the functions used in the project.
 
 ## Usage
 
