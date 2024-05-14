@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
+import UserMovieList from './UserMovieList';
 
 function MovieHome({ genres }) {
 	const [genreMovies, setGenreMovies] = useState({});
@@ -86,6 +87,20 @@ function MovieHome({ genres }) {
 	const addToMyList = (movie) => {
 		setMyList((prevList) => [...prevList, movie]);
 		updateGenreCounts(movie, true);
+		setGenreMovies((prevGenreMovies) => {
+			const updatedGenreMovies = { ...prevGenreMovies };
+			movie.genre_ids.forEach((genreId) => {
+				const genre = Object.keys(updatedGenreMovies).find(
+					(key) => parseInt(key) === genreId
+				);
+				if (genre) {
+					updatedGenreMovies[genre] = updatedGenreMovies[genre].filter(
+						(item) => item.originalTitle !== movie.originalTitle
+					);
+				}
+			});
+			return updatedGenreMovies;
+		});
 	};
 
 	const removeFromMyList = (movie) => {
@@ -93,19 +108,23 @@ function MovieHome({ genres }) {
 			prevList.filter((item) => item.originalTitle !== movie.originalTitle)
 		);
 		updateGenreCounts(movie, false);
+		setGenreMovies((prevGenreMovies) => {
+			const updatedGenreMovies = { ...prevGenreMovies };
+			movie.genre_ids.forEach((genreId) => {
+				const genre = Object.keys(updatedGenreMovies).find(
+					(key) => parseInt(key) === genreId
+				);
+				if (genre) {
+					updatedGenreMovies[genre] = [movie, ...updatedGenreMovies[genre]];
+				}
+			});
+			return updatedGenreMovies;
+		});
 	};
 
 	const isInMyList = (movie) => {
 		return myList.some((item) => item.originalTitle === movie.originalTitle);
 	};
-
-	if (loading) {
-		return (
-			<div className="container mx-auto px-4 text-center">
-				<h2>{loadingMessage}</h2>
-			</div>
-		);
-	}
 
 	return (
 		<div className="container mx-auto px-4">
@@ -113,43 +132,18 @@ function MovieHome({ genres }) {
 				Movie Categories
 			</h1>
 
-			<div className="mb-8 categorybox">
-				<h2 className="text-xl font-semibold mb-4">My List:</h2>
-				{myList.length > 0 ? (
-					<div className="grid grid-cols-5 gap-4">
-						{myList.map((movie) => (
-							<div
-								key={movie.originalTitle}
-								className="col-span-1 relative">
-								<img
-									src={movie.posterPath}
-									alt={movie.originalTitle}
-									className="w-full imgborder h-auto rounded-lg shadow-lg"
-								/>
-								<div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
-									<h3 className="text-center pb-10 font-bold title">
-										{movie.originalTitle}
-									</h3>
-									<p className="text-xs">{movie.overview}</p>
-									<p className="text-m pt-10 italic year">
-										{movie.releaseDate.slice(0, 4)}
-									</p>
-									<button
-										onClick={() => removeFromMyList(movie)}
-										className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
-										Remove from My List
-									</button>
-								</div>
-							</div>
-						))}
-					</div>
-				) : (
-					<p className="text-center text-gray-500">
-						Your favorite movies will appear here. Add movies to your list to
-						see them displayed!
-					</p>
-				)}
-			</div>
+			<UserMovieList
+				myList={myList}
+				setMyList={setMyList}
+				updateGenreCounts={updateGenreCounts}
+			/>
+
+			{loading && (
+				<div className="container text-white loadingtext mx-auto px-4 text-center">
+					{' '}
+					<h2>{loadingMessage}</h2>
+				</div>
+			)}
 
 			{Object.keys(genreMovies).map((genre) => (
 				<div
@@ -159,7 +153,9 @@ function MovieHome({ genres }) {
 					<div className="grid grid-cols-5 gap-4">
 						{(expandedGenre === genre
 							? genreMovies[genre]
-							: genreMovies[genre].slice(0, 5)
+							: genreMovies[genre]
+									.filter((movie) => !isInMyList(movie))
+									.slice(0, 5)
 						).map((movie) => (
 							<div
 								key={movie.originalTitle}

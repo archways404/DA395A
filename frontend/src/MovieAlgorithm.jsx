@@ -75,10 +75,10 @@ function MovieAlgorithm({ genres }) {
 
   if (loading) {
     return (
-      <div className="container loadingtext mx-auto px-4 text-center">
-        <h2>{loadingMessage}</h2>
-      </div>
-    );
+			<div className="container text-white loadingtext mx-auto px-4 text-center">
+				<h2>{loadingMessage}</h2>
+			</div>
+		);
   }
 
   const currentPair = movies.slice(currentIndex, currentIndex + 2);

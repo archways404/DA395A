@@ -1,40 +1,45 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
-import MovieInitializer from "./MovieInitializer";
-import MovieAlgorithm from "./MovieAlgorithm";
-import MovieHome from "./MovieHome";
+import { useState, useEffect } from 'react';
+import MovieInitializer from './MovieInitializer';
+import MovieAlgorithm from './MovieAlgorithm';
+import MovieHome from './MovieHome';
+import UserMovieList from './UserMovieList';
 
 function Router() {
-  const [display, setDisplay] = useState("");
-  const [storedGenres, setStoredGenres] = useState([]);
-  const [selectionCount, setSelectionCount] = useState(0);
+	const [display, setDisplay] = useState('');
+	const [storedGenres, setStoredGenres] = useState([]);
+	const [selectionCount, setSelectionCount] = useState(0);
+	const [myList, setMyList] = useState(() => {
+		const savedList = localStorage.getItem('myList');
+		return savedList ? JSON.parse(savedList) : [];
+	});
 
-  useEffect(() => {
-    const savedDisplay = localStorage.getItem("currentPage");
-    if (savedDisplay) {
-      setDisplay(savedDisplay);
-    }
-    const genres = localStorage.getItem("movieGenres");
-    if (genres) {
-      setStoredGenres(JSON.parse(genres));
-    }
-  }, []);
+	useEffect(() => {
+		const savedDisplay = localStorage.getItem('currentPage');
+		if (savedDisplay) {
+			setDisplay(savedDisplay);
+		}
+		const genres = localStorage.getItem('movieGenres');
+		if (genres) {
+			setStoredGenres(JSON.parse(genres));
+		}
+	}, []);
 
-  useEffect(() => {
-    localStorage.setItem("currentPage", display);
-  }, [display]);
+	useEffect(() => {
+		localStorage.setItem('currentPage', display);
+	}, [display]);
 
-  const handleGenresSubmission = (genres) => {
-    setStoredGenres(genres);
-    localStorage.setItem("movieGenres", JSON.stringify(genres));
-    setDisplay("algorithm");
-  };
+	const handleGenresSubmission = (genres) => {
+		setStoredGenres(genres);
+		localStorage.setItem('movieGenres', JSON.stringify(genres));
+		setDisplay('algorithm');
+	};
 
-  const updateSelectionCount = (count) => {
-    setSelectionCount(count);
-  };
+	const updateSelectionCount = (count) => {
+		setSelectionCount(count);
+	};
 
-  return (
+	return (
 		<div className="app-container">
 			{!storedGenres.length ? (
 				<>
@@ -47,6 +52,11 @@ function Router() {
 						className=" text-white font-bold py-2 px-4 top button"
 						onClick={() => setDisplay('series')}>
 						Display Series
+					</button>
+					<button
+						onClick={() => setDisplay('')}
+						className="text-white font-bold py-2 px-4 top button">
+						Welcome Page
 					</button>
 				</>
 			) : (
@@ -62,8 +72,14 @@ function Router() {
 						className="text-white font-bold py-2 px-4 top button">
 						Movies
 					</button>
+					<button
+						onClick={() => setDisplay('')}
+						className="text-white font-bold py-2 px-4 top button">
+						Welcome Page
+					</button>
 				</>
 			)}
+
 			{display === 'movies' && (
 				<MovieInitializer
 					onGenresSubmission={handleGenresSubmission}
