@@ -113,9 +113,9 @@ function MovieHome({ genres }) {
 				Movie Categories
 			</h1>
 
-			{myList.length > 0 && (
-				<div className="mb-8 categorybox">
-					<h2 className="text-xl font-semibold mb-4">My List:</h2>
+			<div className="mb-8 categorybox">
+				<h2 className="text-xl font-semibold mb-4">My List:</h2>
+				{myList.length > 0 ? (
 					<div className="grid grid-cols-5 gap-4">
 						{myList.map((movie) => (
 							<div
@@ -143,8 +143,13 @@ function MovieHome({ genres }) {
 							</div>
 						))}
 					</div>
-				</div>
-			)}
+				) : (
+					<p className="text-center text-gray-500">
+						Your favorite movies will appear here. Add movies to your list to
+						see them displayed!
+					</p>
+				)}
+			</div>
 
 			{Object.keys(genreMovies).map((genre) => (
 				<div
