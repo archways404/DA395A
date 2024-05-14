@@ -1,8 +1,9 @@
+const axios = require('axios');
+
 const apiKey = process.env.API_KEY;
 const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
-	method: 'GET',
 	headers: {
 		accept: 'application/json',
 		Authorization: `Bearer ${apiKey}`,
@@ -12,9 +13,8 @@ const options = {
 async function getMovieGenres() {
 	const genresUrl = `${baseURL}/genre/movie/list?language=en-US`;
 	try {
-		const response = await fetch(genresUrl, options);
-		const data = await response.json();
-		return data.genres;
+		const response = await axios.get(genresUrl, options);
+		return response.data.genres;
 	} catch (error) {
 		console.error(error);
 		return error;
@@ -25,9 +25,8 @@ async function getMovies() {
 	const randomPage = getRandomNumber();
 	const discoverUrl = `${baseURL}/discover/movie?language=en-US&with_original_language=en&page=${randomPage}&sort_by=popularity.desc`;
 	try {
-		const response = await fetch(discoverUrl, options);
-		const data = await response.json();
-		return data;
+		const response = await axios.get(discoverUrl, options);
+		return response.data;
 	} catch (error) {
 		console.error(error);
 		return error;
@@ -54,7 +53,7 @@ function categorizeByGenres(movies) {
 				genreMap[genreId] = [];
 			}
 			genreMap[genreId].push({
-				genreIds: movie.genre_ids,
+				genreIds: movie.genreIds,
 				originalTitle: movie.originalTitle,
 				posterPath: movie.posterPath,
 			});

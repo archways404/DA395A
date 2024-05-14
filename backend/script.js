@@ -63,13 +63,11 @@ app.get('/m', async (req, res) => {
 
 // POST -> MOVIE ALGORITHM
 app.post('/MovieAlgorithm', async (req, res) => {
-	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
 	const preParsedData = await parseGenreData(req.body);
 	const parsedData = await allocateMovieSlots(preParsedData, 25);
-	console.log('parsedData:', parsedData);
 	res.json(parsedData);
 });
 
@@ -77,7 +75,8 @@ app.post('/MovieAlgorithm', async (req, res) => {
 app.post('/home/movies', async (req, res) => {
 	const requestBody = req.body;
 	const topCategories = await getTopCategories(requestBody, 5);
-	const parsedMovies = await getHomeMovies(topCategories);
+  const parsedMovies = await getHomeMovies(topCategories);
+	console.log(parsedMovies);
 	res.json(parsedMovies);
 });
 
@@ -94,6 +93,10 @@ app.get('/serieGenres', async (req, res) => {
 	res.json(serieGenres);
 });
 
-app.listen(PORT, async () => {
-	console.log(`Server listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+	app.listen(PORT, async () => {
+		console.log(`Server listening on port ${PORT}`);
+	});
+}
+
+module.exports = app;
