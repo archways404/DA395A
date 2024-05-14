@@ -53,16 +53,19 @@ describe('getHomeMovies', () => {
 			{ id: 2, name: 'Comedy', count: 80 },
 		];
 
-		const mockMovies = [
+		const mockMoviesAction = [
 			{
-				title: 'Movie 1',
+				title: 'Action Movie 1',
 				poster_path: '/path1.jpg',
 				overview: 'Overview 1',
 				release_date: '2024-01-01',
 				genre_ids: [1],
 			},
+		];
+
+		const mockMoviesComedy = [
 			{
-				title: 'Movie 2',
+				title: 'Comedy Movie 1',
 				poster_path: '/path2.jpg',
 				overview: 'Overview 2',
 				release_date: '2024-01-02',
@@ -70,30 +73,37 @@ describe('getHomeMovies', () => {
 			},
 		];
 
-		mock
-			.onGet(new RegExp(`${baseURL}/discover/movie`))
-			.reply(200, { results: mockMovies });
+		mock.onGet(new RegExp(`${baseURL}/discover/movie`)).reply((config) => {
+			if (config.url.includes('with_genres=1')) {
+				return [200, { results: mockMoviesAction }];
+			} else if (config.url.includes('with_genres=2')) {
+				return [200, { results: mockMoviesComedy }];
+			}
+			return [404];
+		});
 
 		const result = await getHomeMovies(topCategories);
 
-		expect(result).toEqual(
-			expect.arrayContaining([
-				expect.objectContaining({
-					originalTitle: 'Movie 1',
+		expect(result).toEqual({
+			Action: [
+				{
+					originalTitle: 'Action Movie 1',
 					posterPath: 'https://image.tmdb.org/t/p/original/path1.jpg',
 					overview: 'Overview 1',
 					releaseDate: '2024-01-01',
 					genre_ids: [1],
-				}),
-				expect.objectContaining({
-					originalTitle: 'Movie 2',
+				},
+			],
+			Comedy: [
+				{
+					originalTitle: 'Comedy Movie 1',
 					posterPath: 'https://image.tmdb.org/t/p/original/path2.jpg',
 					overview: 'Overview 2',
 					releaseDate: '2024-01-02',
 					genre_ids: [2],
-				}),
-			])
-		);
+				},
+			],
+		});
 	});
 
 	it('should handle fetch errors gracefully', async () => {
@@ -103,6 +113,6 @@ describe('getHomeMovies', () => {
 
 		const result = await getHomeMovies(topCategories);
 
-		expect(result).toEqual([]);
+		expect(result).toEqual({ Action: [] });
 	});
 });

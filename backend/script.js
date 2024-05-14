@@ -75,7 +75,8 @@ app.post('/MovieAlgorithm', async (req, res) => {
 app.post('/home/movies', async (req, res) => {
 	const requestBody = req.body;
 	const topCategories = await getTopCategories(requestBody, 5);
-	const parsedMovies = await getHomeMovies(topCategories);
+  const parsedMovies = await getHomeMovies(topCategories);
+	console.log(parsedMovies);
 	res.json(parsedMovies);
 });
 

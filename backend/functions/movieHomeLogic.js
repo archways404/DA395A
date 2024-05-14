@@ -1,13 +1,11 @@
 const axios = require('axios');
-
 const apiKey =
 	process.env.NODE_ENV === 'test' ? 'test-api-key' : process.env.API_KEY;
 const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
-	method: 'GET',
 	headers: {
-		accept: 'application/json',
+		Accept: 'application/json',
 		Authorization: `Bearer ${apiKey}`,
 	},
 };
@@ -18,12 +16,15 @@ function getTopCategories(data, numCategories) {
 }
 
 async function fetchMoviesByGenre(genreId, page) {
-	const movieURL = `${baseURL}/discover/movie?api_key=${apiKey}&language=en-US&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`;
+	const movieURL = `${baseURL}/discover/movie?language=en-US&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`;
 	try {
 		const response = await axios.get(movieURL, options);
 		return response.data.results;
 	} catch (error) {
-		console.error('Error fetching movies by genre:', error);
+		console.error(
+			'Error fetching movies by genre:',
+			error.response ? error.response.data : error.message
+		);
 		return [];
 	}
 }
@@ -43,19 +44,11 @@ async function getHomeMovies(topCategories) {
 			genre_ids: movie.genre_ids,
 		}));
 	}
-	return shuffleArray(Object.values(allMovies).flat());
+	return allMovies;
 }
 
 function getRandomNumber() {
-	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-}
-
-function shuffleArray(array) {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
-	}
-	return array;
+	return Math.floor(Math.random() * 100) + 1;
 }
 
 module.exports = {
