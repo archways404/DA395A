@@ -43,11 +43,19 @@ async function getHomeMovies(topCategories) {
 			genre_ids: movie.genre_ids,
 		}));
 	}
-	return allMovies;
+	return shuffleArray(Object.values(allMovies).flat());
 }
 
 function getRandomNumber() {
 	return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+}
+
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
 }
 
 module.exports = {
