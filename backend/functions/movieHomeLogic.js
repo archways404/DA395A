@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const apiKey = process.env.API_KEY;
+const apiKey =
+	process.env.NODE_ENV === 'test' ? 'test-api-key' : process.env.API_KEY;
 const baseURL = 'https://api.themoviedb.org/3';
 
 const options = {
