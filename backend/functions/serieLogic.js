@@ -14,7 +14,6 @@ async function getSerieGenres() {
 	const genresUrl = `${baseUrl}/genre/tv/list?language=en-US`;
 	try {
 		const response = await axios.get(genresUrl, options);
-		console.log(response.data);
 		return response.data.genres;
 	} catch (error) {
 		console.error(error);
@@ -26,7 +25,6 @@ async function getSeries() {
 	const discoverUrl = `${baseUrl}/discover/tv?language=en-US&with_original_language=en`;
 	try {
 		const response = await axios.get(discoverUrl, options);
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -42,8 +40,6 @@ async function parseSeries(data) {
 			? `https://image.tmdb.org/t/p/original${serie.poster_path}`
 			: null,
 	}));
-
-	console.log(series);
 	return series;
 }
 
