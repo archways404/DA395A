@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const apiKey = process.env.API_KEY;
 const baseURL = 'https://api.themoviedb.org/3';
 
@@ -17,9 +19,8 @@ function getTopCategories(data, numCategories) {
 async function fetchMoviesByGenre(genreId, page) {
 	const movieURL = `${baseURL}/discover/movie?api_key=${apiKey}&language=en-US&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`;
 	try {
-		const response = await fetch(movieURL, options);
-		const data = await response.json();
-		return data.results;
+		const response = await axios.get(movieURL, options);
+		return response.data.results;
 	} catch (error) {
 		console.error('Error fetching movies by genre:', error);
 		return [];

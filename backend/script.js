@@ -63,13 +63,11 @@ app.get('/m', async (req, res) => {
 
 // POST -> MOVIE ALGORITHM
 app.post('/MovieAlgorithm', async (req, res) => {
-	console.log(req.body);
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
 	}
 	const preParsedData = await parseGenreData(req.body);
 	const parsedData = await allocateMovieSlots(preParsedData, 25);
-	console.log('parsedData:', parsedData);
 	res.json(parsedData);
 });
 
