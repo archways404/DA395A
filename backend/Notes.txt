@@ -1,0 +1,7 @@
+Format for link:
+
+"https://image.tmdb.org/t/p/w500/" + movie.poster_path
+
+Example: 
+
+https://image.tmdb.org/t/p/w500/wVxkR0gPll2L8mb7CWPGK6hPfHj.jpg

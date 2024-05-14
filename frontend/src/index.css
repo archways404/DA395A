@@ -1,3 +1,89 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes neon {
+  0% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #990011,
+      0 0 70px #990011, 0 0 80px #990011, 0 0 100px #990011, 0 0 150px #990011;
+  }
+  50% {
+    text-shadow: none;
+  }
+  100% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #990011,
+      0 0 35px #990011, 0 0 40px #990011, 0 0 50px #990011, 0 0 75px #990011;
+  }
+}
+
+.neon-text {
+  color: #fff;
+  animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+body {
+  background-image: url("https://hungarytoday.hu/wp-content/uploads/2023/08/pexels-tima-miroshnichenko-7991579-scaled.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "Montserrat", sans-serif;
+}
+
+.imgborder {
+  border: 3px solid black;
+}
+
+.moviebox {
+  padding: 30px 0 10px;
+  background-color: rgba(255, 242, 233, 0.658);
+  border-radius: 20px;
+}
+
+.movietext {
+  font-weight: 600;
+}
+
+.button {
+  background-color: #990011;
+  border-radius: 8px;
+  margin: 15px;
+}
+
+.titlecard {
+  font-weight: bold;
+  text-shadow: 0 0 30px #fff;
+}
+
+.top {
+  margin: 5px;
+}
+
+.loadingtext {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.categorybox {
+  padding: 30px 20px 0px;
+  background-color: rgba(255, 242, 233, 0.658);
+  border-radius: 20px;
+  color: black;
+}
+
+.infocard {
+  border-radius: 10px;
+}
+
+.year {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 15px;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  margin-top: 25px;
+}
