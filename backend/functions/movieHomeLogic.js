@@ -38,6 +38,7 @@ async function getHomeMovies(topCategories) {
 				: null,
 			overview: movie.overview,
 			releaseDate: movie.release_date,
+			genre_ids: movie.genre_ids,
 		}));
 	}
 	return allMovies;

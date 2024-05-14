@@ -35,45 +35,51 @@ function Router() {
   };
 
   return (
-    <div className="app-container">
-      {!storedGenres.length ? (
-        <>
-          <button onClick={() => setDisplay("movies")}>Display Movies</button>
-          <button onClick={() => setDisplay("series")}>Display Series</button>
-        </>
-      ) : (
-        <>
-          <button
-            onClick={() => setDisplay("algorithm")}
-            className=" text-white font-bold py-2 px-4 top button"
-          >
-            Movie Algorithm
-          </button>
+		<div className="app-container">
+			{!storedGenres.length ? (
+				<>
+					<button
+						className=" text-white font-bold py-2 px-4 top button"
+						onClick={() => setDisplay('movies')}>
+						Display Movies
+					</button>
+					<button
+						className=" text-white font-bold py-2 px-4 top button"
+						onClick={() => setDisplay('series')}>
+						Display Series
+					</button>
+				</>
+			) : (
+				<>
+					<button
+						onClick={() => setDisplay('algorithm')}
+						className=" text-white font-bold py-2 px-4 top button">
+						Movie Algorithm
+					</button>
 
-          <button
-            onClick={() => setDisplay("home")}
-            className="text-white font-bold py-2 px-4 top button"
-          >
-            Movies
-          </button>
-        </>
-      )}
-      {display === "movies" && (
-        <MovieInitializer
-          onGenresSubmission={handleGenresSubmission}
-          onUpdateSelectionCount={updateSelectionCount}
-        />
-      )}
-      {display === "series" && (
-        <MovieInitializer
-          onGenresSubmission={handleGenresSubmission}
-          onUpdateSelectionCount={updateSelectionCount}
-        />
-      )}
-      {display === "algorithm" && <MovieAlgorithm genres={storedGenres} />}
-      {display === "home" && <MovieHome genres={storedGenres} />}
-    </div>
-  );
+					<button
+						onClick={() => setDisplay('home')}
+						className="text-white font-bold py-2 px-4 top button">
+						Movies
+					</button>
+				</>
+			)}
+			{display === 'movies' && (
+				<MovieInitializer
+					onGenresSubmission={handleGenresSubmission}
+					onUpdateSelectionCount={updateSelectionCount}
+				/>
+			)}
+			{display === 'series' && (
+				<MovieInitializer
+					onGenresSubmission={handleGenresSubmission}
+					onUpdateSelectionCount={updateSelectionCount}
+				/>
+			)}
+			{display === 'algorithm' && <MovieAlgorithm genres={storedGenres} />}
+			{display === 'home' && <MovieHome genres={storedGenres} />}
+		</div>
+	);
 }
 
 export default Router;
