@@ -58,14 +58,9 @@ function Router() {
 						Display Movies
 					</button>
 					<button
-						className=" text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('series')}>
-						Display Series
-					</button>
-					<button
 						onClick={() => setDisplay('')}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Welcome
 					</button>
 				</>
 			) : (
@@ -83,7 +78,7 @@ function Router() {
 					<button
 						onClick={() => setDisplay('')}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Welcome
 					</button>
 					<button
 						onClick={() => cleanStorage()}
@@ -94,12 +89,6 @@ function Router() {
 			)}
 
 			{display === 'movies' && (
-				<MovieInitializer
-					onGenresSubmission={handleGenresSubmission}
-					onUpdateSelectionCount={updateSelectionCount}
-				/>
-			)}
-			{display === 'series' && (
 				<MovieInitializer
 					onGenresSubmission={handleGenresSubmission}
 					onUpdateSelectionCount={updateSelectionCount}

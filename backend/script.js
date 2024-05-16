@@ -1,6 +1,6 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
 dotenv.config();
@@ -23,12 +23,6 @@ const {
 	parseMovies,
 	categorizeByGenres,
 } = require('./functions/movieLogic');
-
-const {
-	getSerieGenres,
-	getSeries,
-	parseSeries,
-} = require('./functions/serieLogic');
 
 const {
 	parseGenreData,
@@ -122,37 +116,6 @@ app.post('/home/movies', async (req, res) => {
 	const topCategories = await getTopCategories(requestBody, 5);
 	const parsedMovies = await getHomeMovies(topCategories);
 	res.json(parsedMovies);
-});
-
-/**
- * GET /series
- * Fetches and returns a list of series.
- * @name GET/series
- * @function
- * @memberof module:express.Router
- * @inner
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- */
-app.get('/series', async (req, res) => {
-	const data = await getSeries();
-	const series = await parseSeries(data);
-	res.json(series);
-});
-
-/**
- * GET /serieGenres
- * Fetches and returns a list of series genres.
- * @name GET/serieGenres
- * @function
- * @memberof module:express.Router
- * @inner
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- */
-app.get('/serieGenres', async (req, res) => {
-	const serieGenres = await getSerieGenres();
-	res.json(serieGenres);
 });
 
 if (process.env.NODE_ENV !== 'test') {
