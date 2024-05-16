@@ -37,7 +37,16 @@ function Router() {
 
 	const updateSelectionCount = (count) => {
 		setSelectionCount(count);
-	};
+  };
+  
+  const cleanStorage = () => {
+    localStorage.removeItem('movieGenres');
+    localStorage.removeItem('myList');
+    localStorage.removeItem('currentPage');
+    setStoredGenres([]);
+    setMyList([]);
+    setDisplay('');
+  }
 
 	return (
 		<div className="app-container">
@@ -66,7 +75,6 @@ function Router() {
 						className=" text-white font-bold py-2 px-4 top button">
 						Movie Algorithm
 					</button>
-
 					<button
 						onClick={() => setDisplay('home')}
 						className="text-white font-bold py-2 px-4 top button">
@@ -76,6 +84,11 @@ function Router() {
 						onClick={() => setDisplay('')}
 						className="text-white font-bold py-2 px-4 top button">
 						Welcome Page
+					</button>
+					<button
+						onClick={() => cleanStorage()}
+						className="text-white font-bold py-2 px-4 top button">
+						Clean Storage
 					</button>
 				</>
 			)}

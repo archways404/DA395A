@@ -106,7 +106,7 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 					Selected: {selectionCount} / 5
 				</div>
 				<h1 className="text-center text-2xl font-bold my-4">
-					Select Your Favorite Movie
+					Select movies that you like or think you would enjoy
 				</h1>
 				<div className="flex justify-between items-start mb-4">
 					{currentPair.map((movie, index) => (
@@ -118,7 +118,7 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 								alt={movie.originalTitle}
 								className="w-1/2 h-auto mx-auto"
 							/>
-							<p className="text-center text-lg my-2">{movie.originalTitle}</p>
+							<p className="text-center text-white text-lg my-2">{movie.originalTitle}</p>
 							<div className="text-center">
 								<button
 									onClick={() => handleSelectMovie(movie)}
