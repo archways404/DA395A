@@ -84,58 +84,58 @@ function MovieAlgorithm({ genres }) {
   const currentPair = movies.slice(currentIndex, currentIndex + 2);
 
   return (
-    <>
-      <div className="container mx-auto px-4">
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <>
-            <div className="titlecard">
-              <h1 className="text-center text-2xl my-4">
-                Continue selecting your favorite movie(s)
-              </h1>
-              <h2 className="text-center text-1xl my-4">
-                The more movies you give our Algorithm, the better the
-                recommendations will be!
-              </h2>
-            </div>
+		<>
+			<div className="container mx-auto px-4">
+				{error ? (
+					<p>{error}</p>
+				) : (
+					<>
+						<div className="titlecard">
+							<h1 className="text-center text-2xl my-4">
+								Continue selecting your favorite movie(s)
+							</h1>
+							<h2 className="text-center text-1xl my-4">
+								The more movies you give our Algorithm, the better the
+								recommendations will be!
+							</h2>
+						</div>
 
-            <div className="flex justify-between items-start mb-4 moviebox">
-              {currentPair.map((movie, index) => (
-                <div key={movie.id} className="w-1/2 px-2">
-                  <p className="text-center text-lg my-2 movietext">
-                    {movie.title}
-                  </p>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    className="w-1/2 h-auto mx-auto imgborder"
-                  />
-
-                  <div className="text-center">
-                    <button
-                      onClick={() => handleSelectMovie(movie)}
-                      className="button text-white py-2 px-4 neon-text"
-                    >
-                      Select
-                    </button>
-                  </div>
+						<div className="flex justify-between items-start mb-4 moviebox">
+							{currentPair.map((movie, index) => (
+								<div
+									key={movie.id}
+									className="w-1/2 px-2">
+									<img
+										src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+										alt={movie.title}
+										className="w-1/2 h-auto mx-auto imgborder"
+									/>
+									<p className="text-center text-lg my-2 movietext">
+										{movie.title}
+									</p>
+									<div className="text-center">
+										<button
+											onClick={() => handleSelectMovie(movie)}
+											className="button text-white py-2 px-4 neon-text">
+											Select
+										</button>
+									</div>
                 </div>
-              ))}
-            </div>
-            <div className="text-center mb-4">
-              <button
-                onClick={moveToNextPair}
-                className="button text-white py-2 px-4 skip"
-              >
-                Skip
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </>
-  );
+                
+							))}
+						</div>
+						<div className="text-center mb-4">
+							<button
+								onClick={moveToNextPair}
+								className="button text-white py-2 px-4 skip">
+								Skip
+							</button>
+						</div>
+					</>
+				)}
+			</div>
+		</>
+	);
 }
 
 export default MovieAlgorithm;

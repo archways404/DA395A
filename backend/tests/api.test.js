@@ -35,16 +35,4 @@ describe('API Endpoints', () => {
 		expect(res.statusCode).toEqual(200);
 		expect(res.body).toBeInstanceOf(Object);
 	});
-
-	it('GET /series should return a list of series', async () => {
-		const res = await request(app).get('/series');
-		expect(res.statusCode).toEqual(200);
-		expect(res.body).toBeInstanceOf(Array);
-	});
-
-	it('GET /serieGenres should return a list of series genres', async () => {
-		const res = await request(app).get('/serieGenres');
-		expect(res.statusCode).toEqual(200);
-		expect(res.body).toBeInstanceOf(Array);
-	});
 });

@@ -37,7 +37,16 @@ function Router() {
 
 	const updateSelectionCount = (count) => {
 		setSelectionCount(count);
-	};
+  };
+  
+  const cleanStorage = () => {
+    localStorage.removeItem('movieGenres');
+    localStorage.removeItem('myList');
+    localStorage.removeItem('currentPage');
+    setStoredGenres([]);
+    setMyList([]);
+    setDisplay('');
+  }
 
 	return (
 		<div className="app-container">
@@ -49,14 +58,9 @@ function Router() {
 						Display Movies
 					</button>
 					<button
-						className=" text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('series')}>
-						Display Series
-					</button>
-					<button
 						onClick={() => setDisplay('')}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Welcome
 					</button>
 				</>
 			) : (
@@ -66,7 +70,6 @@ function Router() {
 						className=" text-white font-bold py-2 px-4 top button">
 						Movie Algorithm
 					</button>
-
 					<button
 						onClick={() => setDisplay('home')}
 						className="text-white font-bold py-2 px-4 top button">
@@ -75,18 +78,17 @@ function Router() {
 					<button
 						onClick={() => setDisplay('')}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Welcome
+					</button>
+					<button
+						onClick={() => cleanStorage()}
+						className="text-white font-bold py-2 px-4 top button">
+						Clean Storage
 					</button>
 				</>
 			)}
 
 			{display === 'movies' && (
-				<MovieInitializer
-					onGenresSubmission={handleGenresSubmission}
-					onUpdateSelectionCount={updateSelectionCount}
-				/>
-			)}
-			{display === 'series' && (
 				<MovieInitializer
 					onGenresSubmission={handleGenresSubmission}
 					onUpdateSelectionCount={updateSelectionCount}
