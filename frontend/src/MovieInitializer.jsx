@@ -122,7 +122,7 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 							<div className="text-center">
 								<button
 									onClick={() => handleSelectMovie(movie)}
-									className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+									className="button neon-text text-white font-bold py-2 px-4 rounded">
 									Select
 								</button>
 							</div>
@@ -132,7 +132,7 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 				<div className="text-center mb-4">
 					<button
 						onClick={moveToNextPair}
-						className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+						className="button text-white font-bold py-2 px-4 rounded">
 						Skip
 					</button>
 				</div>
