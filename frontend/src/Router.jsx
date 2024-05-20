@@ -45,7 +45,7 @@ function Router() {
 		localStorage.removeItem('currentPage');
 		setStoredGenres([]);
 		setMyList([]);
-		setDisplay('');
+		setDisplay('Welcome');
 	};
 
 	return (
@@ -54,14 +54,12 @@ function Router() {
 				<>
 					<button
 						className="text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('movies')}
-					>
+						onClick={() => setDisplay('movies')}>
 						Display Movies
 					</button>
 					<button
 						onClick={() => setDisplay('Welcome')}
-						className="text-white font-bold py-2 px-4 top button"
-					>
+						className="text-white font-bold py-2 px-4 top button">
 						Welcome
 					</button>
 				</>
@@ -69,26 +67,22 @@ function Router() {
 				<>
 					<button
 						onClick={() => setDisplay('algorithm')}
-						className="text-white font-bold py-2 px-4 top button"
-					>
+						className="text-white font-bold py-2 px-4 top button">
 						Movie Algorithm
 					</button>
 					<button
 						onClick={() => setDisplay('home')}
-						className="text-white font-bold py-2 px-4 top button"
-					>
+						className="text-white font-bold py-2 px-4 top button">
 						Movies
 					</button>
 					<button
 						onClick={() => setDisplay('Welcome')}
-						className="text-white font-bold py-2 px-4 top button"
-					>
+						className="text-white font-bold py-2 px-4 top button">
 						Welcome
 					</button>
 					<button
 						onClick={() => cleanStorage()}
-						className="text-white font-bold py-2 px-4 top button"
-					>
+						className="text-white font-bold py-2 px-4 top button">
 						Clean Storage
 					</button>
 				</>
@@ -102,7 +96,7 @@ function Router() {
 			)}
 			{display === 'algorithm' && <MovieAlgorithm genres={storedGenres} />}
 			{display === 'home' && <MovieHome genres={storedGenres} />}
-			{display === 'Welcome' && <Welcome />} {/* Add this line */}
+			{display === 'Welcome' && <Welcome />}
 		</div>
 	);
 }
