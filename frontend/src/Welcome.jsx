@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 const WelcomePage = ({ setDisplay }) => {
 	return (
 		<div className="titlecard">
-			<div class="flex justify-center">
+			<div className="flex justify-center">
 				<svg
 					className="bigwelcomelogo"
 					fill="#000000"
