@@ -18,6 +18,8 @@ function Router() {
 		const savedDisplay = localStorage.getItem('currentPage');
 		if (savedDisplay) {
 			setDisplay(savedDisplay);
+		} else {
+			setDisplay('Welcome');
 		}
 		const genres = localStorage.getItem('movieGenres');
 		if (genres) {
@@ -96,7 +98,7 @@ function Router() {
 			)}
 			{display === 'algorithm' && <MovieAlgorithm genres={storedGenres} />}
 			{display === 'home' && <MovieHome genres={storedGenres} />}
-			{display === 'Welcome' && <Welcome />}
+			{display === 'Welcome' && <Welcome setDisplay={setDisplay} />}
 		</div>
 	);
 }
