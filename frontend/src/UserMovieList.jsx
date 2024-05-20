@@ -12,7 +12,7 @@ function UserMovieList({ myList, setMyList, updateGenreCounts }) {
 		<div className="mb-8 categorybox">
 			<h2 className="text-xl font-semibold mb-4">My List:</h2>
 			{myList.length > 0 ? (
-				<div className="grid grid-cols-5 gap-4">
+				<div className="grid grid-cols-5 gap-4 mylistcard">
 					{myList.map((movie) => (
 						<div
 							key={movie.originalTitle}
