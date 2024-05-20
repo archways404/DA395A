@@ -22,13 +22,31 @@
 }
 
 body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url("https://hungarytoday.hu/wp-content/uploads/2023/08/pexels-tima-miroshnichenko-7991579-scaled.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  filter: blur(10px); 
+  z-index: -1;
+}
 
-  font-family: "Montserrat", sans-serif;
+.app-container {
+  position: relative;
+  z-index: 1;
 }
 
 .imgborder {
