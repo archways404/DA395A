@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
-import UserMovieList from './UserMovieList';
+import UserMovieList from './UserMovieList.jsx';
 
-function MovieHome({ genres }) {
+function Home({ genres }) {
 	const [genreMovies, setGenreMovies] = useState({});
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -201,4 +201,4 @@ function MovieHome({ genres }) {
 	);
 }
 
-export default MovieHome;
+export default Home;

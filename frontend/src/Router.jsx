@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-import MovieInitializer from './MovieInitializer';
-import MovieAlgorithm from './MovieAlgorithm';
-import MovieHome from './MovieHome';
-import Welcome from './Welcome';
+import Initializer from './components/Initializer.jsx';
+import Algorithm from './components/Algorithm.jsx';
+import Home from './components/Home.jsx';
+import WelcomePage from './components/WelcomePage.jsx';
 
 function Router() {
 	const [display, setDisplay] = useState('');
@@ -19,7 +19,7 @@ function Router() {
 		if (savedDisplay) {
 			setDisplay(savedDisplay);
 		} else {
-			setDisplay('Welcome');
+			setDisplay('welcome');
 		}
 		const genres = localStorage.getItem('movieGenres');
 		if (genres) {
@@ -47,7 +47,7 @@ function Router() {
 		localStorage.removeItem('currentPage');
 		setStoredGenres([]);
 		setMyList([]);
-		setDisplay('Welcome');
+		setDisplay('welcome');
 	};
 
 	return (
@@ -60,7 +60,7 @@ function Router() {
 						Display Movies
 					</button>
 					<button
-						onClick={() => setDisplay('Welcome')}
+						onClick={() => setDisplay('welcome')}
 						className="text-white font-bold py-2 px-4 top button">
 						Welcome
 					</button>
@@ -91,14 +91,14 @@ function Router() {
 			)}
 
 			{display === 'movies' && (
-				<MovieInitializer
+				<Initializer
 					onGenresSubmission={handleGenresSubmission}
 					onUpdateSelectionCount={updateSelectionCount}
 				/>
 			)}
-			{display === 'algorithm' && <MovieAlgorithm genres={storedGenres} />}
-			{display === 'home' && <MovieHome genres={storedGenres} />}
-			{display === 'Welcome' && <Welcome setDisplay={setDisplay} />}
+			{display === 'algorithm' && <Algorithm genres={storedGenres} />}
+			{display === 'home' && <Home genres={storedGenres} />}
+			{display === 'welcome' && <WelcomePage setDisplay={setDisplay} />}
 		</div>
 	);
 }
