@@ -45,7 +45,8 @@ function Router() {
 	const cleanStorage = () => {
 		localStorage.removeItem('movieGenres');
 		localStorage.removeItem('myList');
-		localStorage.removeItem('currentPage');
+    localStorage.removeItem('currentPage');
+		localStorage.removeItem('selectionCounter');
 		setStoredGenres([]);
 		setMyList([]);
 		setDisplay('welcome');
