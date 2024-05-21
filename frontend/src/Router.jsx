@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 import { useState, useEffect } from 'react';
 import Initializer from './components/Initializer.jsx';
 import Algorithm from './components/Algorithm.jsx';
@@ -55,14 +56,9 @@ function Router() {
 			{!storedGenres.length ? (
 				<>
 					<button
-						className="text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('movies')}>
-						Display Movies
-					</button>
-					<button
-						onClick={() => setDisplay('welcome')}
+						onClick={() => cleanStorage()}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome
+						Clean Storage
 					</button>
 				</>
 			) : (
@@ -78,7 +74,7 @@ function Router() {
 						Movies
 					</button>
 					<button
-						onClick={() => setDisplay('Welcome')}
+						onClick={() => setDisplay('welcome')}
 						className="text-white font-bold py-2 px-4 top button">
 						Welcome
 					</button>

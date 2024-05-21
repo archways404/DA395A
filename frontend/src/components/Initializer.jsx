@@ -35,6 +35,16 @@ function Initializer({ onGenresSubmission, onUpdateSelectionCount }) {
 	}, []);
 
 	useEffect(() => {
+		const selectionCount = localStorage.getItem('selectionCounter');
+		if (selectionCount) {
+			setSelectionCount(parseInt(selectionCount));
+		} else {
+			localStorage.setItem('selectionCounter', 0);
+			setSelectionCount(0);
+		}
+	}, []);
+
+	useEffect(() => {
 		fetch('http://localhost:3000/movies')
 			.then((response) => response.json())
 			.then(setMovies)
@@ -46,6 +56,7 @@ function Initializer({ onGenresSubmission, onUpdateSelectionCount }) {
 		selectedMovie.genreIds.forEach((id) => incrementCount(id));
 		const newSelectionCount = selectionCount + 1;
 		setSelectionCount(newSelectionCount);
+		localStorage.setItem('selectionCounter', newSelectionCount);
 		onUpdateSelectionCount(newSelectionCount);
 
 		if (newSelectionCount >= 5) {
