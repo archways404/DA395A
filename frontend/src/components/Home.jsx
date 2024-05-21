@@ -2,12 +2,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import UserMovieList from './UserMovieList.jsx';
+import Loading from './Loading.jsx';
 
 function Home({ genres }) {
 	const [genreMovies, setGenreMovies] = useState({});
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
-	const [loadingMessage, setLoadingMessage] = useState('Loading.');
 	const [expandedGenre, setExpandedGenre] = useState(null);
 	const [myList, setMyList] = useState(() => {
 		const savedList = localStorage.getItem('myList');
@@ -22,17 +22,6 @@ function Home({ genres }) {
 		fetchMovies(genres);
 		console.log('once');
 	}, [genres]);
-
-	useEffect(() => {
-		let dots = 1;
-		const interval = setInterval(() => {
-			if (loading) {
-				dots = (dots % 3) + 1;
-				setLoadingMessage(`Loading${'.'.repeat(dots)}`);
-			}
-		}, 300);
-		return () => clearInterval(interval);
-	}, [loading]);
 
 	useEffect(() => {
 		localStorage.setItem('myList', JSON.stringify(myList));
@@ -128,75 +117,79 @@ function Home({ genres }) {
 
 	return (
 		<div className="container mx-auto px-4">
-			<h1 className="text-2xl titlecard font-bold my-4 text-black text-center">
-				Movie Categories
-			</h1>
-
-			<UserMovieList
-				myList={myList}
-				setMyList={setMyList}
-				updateGenreCounts={updateGenreCounts}
-			/>
-
-			{loading && (
-				<div className="container text-white loadingtext mx-auto px-4 text-center">
-					{' '}
-					<h2>{loadingMessage}</h2>
+			{loading ? (
+				<div className="container text-white mx-auto px-4 flex justify-center items-center min-h-screen">
+					<Loading
+						type="spinningBubbles"
+						color="red"
+						className="mx-auto"
+					/>
 				</div>
-			)}
+			) : (
+				<>
+					<h1 className="text-2xl titlecard font-bold my-4 text-black text-center">
+						Movie Categories
+					</h1>
+					<UserMovieList
+						myList={myList}
+						setMyList={setMyList}
+						updateGenreCounts={updateGenreCounts}
+					/>
 
-			{Object.keys(genreMovies).map((genre) => (
-				<div
-					key={genre}
-					className="mb-8 categorybox">
-					<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
-					<div className="grid grid-cols-5 gap-4">
-						{(expandedGenre === genre
-							? genreMovies[genre]
-							: genreMovies[genre]
-									.filter((movie) => !isInMyList(movie))
-									.slice(0, 5)
-						).map((movie) => (
-							<div
-								key={movie.originalTitle}
-								className="col-span-1 relative">
-								<img
-									src={movie.posterPath}
-									alt={movie.originalTitle}
-									className="w-full imgborder h-auto rounded-lg shadow-lg"
-								/>
-								<div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
-									<h3 className="text-center pb-10 font-bold title">
-										{movie.originalTitle}
-									</h3>
-									<p className="text-xs">{movie.overview}</p>
-									<p className="text-m pt-10 italic year">
-										{movie.releaseDate.slice(0, 4)}
-									</p>
-									{isInMyList(movie) ? (
-										<button
-											onClick={() => removeFromMyList(movie)}
-											className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
-											Remove from My List
-										</button>
-									) : (
-										<button
-											onClick={() => addToMyList(movie)}
-											className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
-											Add to My List
-										</button>
-									)}
-								</div>
+					{Object.keys(genreMovies).map((genre) => (
+						<div
+							key={genre}
+							className="mb-8 categorybox">
+							<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
+							<div className="grid grid-cols-5 gap-4">
+								{(expandedGenre === genre
+									? genreMovies[genre]
+									: genreMovies[genre]
+											.filter((movie) => !isInMyList(movie))
+											.slice(0, 5)
+								).map((movie) => (
+									<div
+										key={movie.originalTitle}
+										className="col-span-1 relative">
+										<img
+											src={movie.posterPath}
+											alt={movie.originalTitle}
+											className="w-full imgborder h-auto rounded-lg shadow-lg"
+										/>
+										<div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
+											<h3 className="text-center pb-10 font-bold title">
+												{movie.originalTitle}
+											</h3>
+											<p className="text-xs">{movie.overview}</p>
+											<p className="text-m pt-10 italic year">
+												{movie.releaseDate.slice(0, 4)}
+											</p>
+											{isInMyList(movie) ? (
+												<button
+													onClick={() => removeFromMyList(movie)}
+													className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
+													Remove from My List
+												</button>
+											) : (
+												<button
+													onClick={() => addToMyList(movie)}
+													className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
+													Add to My List
+												</button>
+											)}
+										</div>
+									</div>
+								))}
 							</div>
-						))}
-					</div>
-					<button
-						onClick={() => toggleGenre(genre)}
-						className="button text-white py-2 px-4 rounded">
-						{expandedGenre === genre ? 'View Less' : 'View More'}
-					</button>
-				</div>
-			))}
+							<button
+								onClick={() => toggleGenre(genre)}
+								className="button text-white py-2 px-4 rounded">
+								{expandedGenre === genre ? 'View Less' : 'View More'}
+							</button>
+						</div>
+					))}
+				</>
+			)}
 		</div>
 	);
 }
