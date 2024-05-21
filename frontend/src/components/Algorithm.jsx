@@ -4,28 +4,18 @@
 
 import { useEffect, useState } from 'react';
 
+import Loading from './Loading.jsx';
+
 function Algorithm({ genres }) {
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [loading, setLoading] = useState(false);
-	const [loadingMessage, setLoadingMessage] = useState('Loading.');
 	const [error, setError] = useState('');
 	const [updatedGenres, setUpdatedGenres] = useState(genres);
 
 	useEffect(() => {
 		fetchMovies(updatedGenres);
 	}, [updatedGenres]);
-
-	useEffect(() => {
-		let dots = 1;
-		const interval = setInterval(() => {
-			if (loading) {
-				dots = (dots % 3) + 1;
-				setLoadingMessage(`Loading${'.'.repeat(dots)}`);
-			}
-		}, 300);
-		return () => clearInterval(interval);
-	}, [loading]);
 
 	const fetchMovies = (genres) => {
 		if (!loading && movies.length - currentIndex > 5) {
@@ -75,8 +65,12 @@ function Algorithm({ genres }) {
 
 	if (loading) {
 		return (
-			<div className="container text-white loadingtext mx-auto px-4 text-center">
-				<h2>{loadingMessage}</h2>
+			<div className="container text-white mx-auto px-4 flex justify-center items-center min-h-screen">
+				<Loading
+					type="spinningBubbles"
+					color="red"
+					className="mx-auto"
+				/>
 			</div>
 		);
 	}
