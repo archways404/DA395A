@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 
-function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
+function Initializer({ onGenresSubmission, onUpdateSelectionCount }) {
 	const [genres, setGenres] = useState([]);
 	const [movies, setMovies] = useState([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -118,7 +118,9 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 								alt={movie.originalTitle}
 								className="w-1/2 h-auto mx-auto"
 							/>
-							<p className="text-center text-white text-lg my-2">{movie.originalTitle}</p>
+							<p className="text-center text-white text-lg my-2">
+								{movie.originalTitle}
+							</p>
 							<div className="text-center">
 								<button
 									onClick={() => handleSelectMovie(movie)}
@@ -141,4 +143,4 @@ function MovieInitializer({ onGenresSubmission, onUpdateSelectionCount }) {
 	);
 }
 
-export default MovieInitializer;
+export default Initializer;
