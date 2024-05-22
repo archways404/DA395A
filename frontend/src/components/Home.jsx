@@ -150,47 +150,45 @@ function Home({ genres }) {
 					key={genre}
 					className="mb-8 categorybox overflow-hidden">
 					<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
-					<div className="w-max overflow-x-scroll scroll xl:overflow-hidden  whitespace-nowrap scroll-smooth"> 
-						<div className="grid grid-cols-5 gap-4">
-							{(expandedGenre === genre
-								? genreMovies[genre]
-								: genreMovies[genre]
-										.filter((movie) => !isInMyList(movie))
-										.slice(0, 5)
-							).map((movie) => (
-								<div
-									key={movie.originalTitle}
-									className="col-span-1 relative max-w-64 xl:max-w-auto">
-									<img
-										src={movie.posterPath}
-										alt={movie.originalTitle}
-										className="w-full imgborder h-auto rounded-lg shadow-lg"
-									/>
-									<div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
-										<h3 className="text-center pb-10 font-bold title">
-											{movie.originalTitle}
-										</h3>
-										<p className="text-xs max-w-28 ">{movie.overview}</p>
-										<p className="text-m pt-10 italic year">
-											{movie.releaseDate.slice(0, 4)}
-										</p>
-										{isInMyList(movie) ? (
-											<button
-												onClick={() => removeFromMyList(movie)}
-												className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
-												Remove from My List
-											</button>
-										) : (
-											<button
-												onClick={() => addToMyList(movie)}
-												className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
-												Add to My List
-											</button>
-										)}
-									</div>
+					<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll xl:auto-cols-auto xl:overflow-auto"> 
+						{(expandedGenre === genre
+							? genreMovies[genre]
+							: genreMovies[genre]
+									.filter((movie) => !isInMyList(movie))
+									.slice(0, 5)
+						).map((movie) => (
+							<div
+								key={movie.originalTitle}
+								className=" relative overflow-hidden w-64">
+								<img
+									src={movie.posterPath}
+									alt={movie.originalTitle}
+									className="w-full imgborder h-auto rounded-lg shadow-lg"
+								/>
+								<div className="absolute inset-0 infocard bg-black bg-opacity-75 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-white p-4 transition-opacity duration-300">
+									<h3 className="text-center pb-10 font-bold title">
+										{movie.originalTitle}
+									</h3>
+									<p className="text-xs max-w-28 block whitespace-normal">{movie.overview}</p>
+									<p className="text-m pt-10 italic year">
+										{movie.releaseDate.slice(0, 4)}
+									</p>
+									{isInMyList(movie) ? (
+										<button
+											onClick={() => removeFromMyList(movie)}
+											className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
+											Remove from My List
+										</button>
+									) : (
+										<button
+											onClick={() => addToMyList(movie)}
+											className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
+											Add to My List
+										</button>
+									)}
 								</div>
-							))}
-						</div>
+							</div>
+						))}
 					</div>
 					
 					<button
