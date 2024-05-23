@@ -150,7 +150,7 @@ function Home({ genres }) {
 					key={genre}
 					className="mb-8 categorybox overflow-hidden">
 					<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
-					<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll xl:auto-cols-auto xl:overflow-auto"> 
+					<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll xl:grid-cols-5 xl:grid-rows-auto xl:overflow-x-hidden xl:grid-flow-row"> 
 						{(expandedGenre === genre
 							? genreMovies[genre]
 							: genreMovies[genre]
@@ -169,8 +169,8 @@ function Home({ genres }) {
 									<h3 className="text-center pb-10 font-bold title">
 										{movie.originalTitle}
 									</h3>
-									<p className="text-xs max-w-28 block whitespace-normal">{movie.overview}</p>
-									<p className="text-m pt-10 italic year">
+									<p className="text-xs block whitespace-normal">{movie.overview}</p>
+									<p className="text-m pt-2 italic year">
 										{movie.releaseDate.slice(0, 4)}
 									</p>
 									{isInMyList(movie) ? (
@@ -182,7 +182,7 @@ function Home({ genres }) {
 									) : (
 										<button
 											onClick={() => addToMyList(movie)}
-											className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
+											className="mt-2 py-1 px-2 bg-green-500 rounded text-white z-10">
 											Add to My List
 										</button>
 									)}

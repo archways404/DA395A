@@ -9,14 +9,14 @@ function UserMovieList({ myList, setMyList, updateGenreCounts }) {
 	};
 
 	return (
-		<div className="mb-8 categorybox">
+		<div className="mb-8 categorybox overflow-hidden">
 			<h2 className="text-xl font-semibold mb-4">My List:</h2>
 			{myList.length > 0 ? (
-				<div className="grid grid-cols-5 gap-4 mylistcard">
+				<div className="grid grid-flow-col auto-cols-64 overflow-x-scroll gap-4 mylistcard xl:grid-cols-5 xl:grid-rows-auto xl:overflow-x-hidden xl:grid-flow-row">
 					{myList.map((movie) => (
 						<div
 							key={movie.originalTitle}
-							className="col-span-1 relative">
+							className="relative w-64 overflow-hidden">
 							<img
 								src={movie.posterPath}
 								alt={movie.originalTitle}
@@ -27,12 +27,12 @@ function UserMovieList({ myList, setMyList, updateGenreCounts }) {
 									{movie.originalTitle}
 								</h3>
 								<p className="text-xs">{movie.overview}</p>
-								<p className="text-m pt-10 italic year">
+								<p className="text-m pt-2 italic year">
 									{movie.releaseDate.slice(0, 4)}
 								</p>
 								<button
 									onClick={() => removeFromMyList(movie)}
-									className="mt-2 py-1 px-2 bg-red-500 rounded text-white">
+									className="mt-2 py-1 px-2 bg-red-500 rounded text-white z-10">
 									Remove from My List
 								</button>
 							</div>
