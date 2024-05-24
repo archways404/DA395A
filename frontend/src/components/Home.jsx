@@ -150,7 +150,7 @@ function Home({ genres }) {
 					key={genre}
 					className="mb-8 categorybox overflow-hidden">
 					<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
-					<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll xl:grid-cols-5 xl:grid-rows-auto xl:overflow-x-hidden xl:grid-flow-row"> 
+					<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll 2xl:grid-cols-5 2xl:grid-rows-auto 2xl:overflow-x-hidden 2xl:grid-flow-row"> 
 						{(expandedGenre === genre
 							? genreMovies[genre]
 							: genreMovies[genre]
