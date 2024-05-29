@@ -1,6 +1,6 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
 dotenv.config();
@@ -25,12 +25,6 @@ const {
 } = require('./functions/movieLogic');
 
 const {
-	getSerieGenres,
-	getSeries,
-	parseSeries,
-} = require('./functions/serieLogic');
-
-const {
 	parseGenreData,
 	allocateMovieSlots,
 } = require('./functions/algorithmLogic');
@@ -40,20 +34,47 @@ const {
 	getHomeMovies,
 } = require('./functions/movieHomeLogic');
 
-// GET -> MOVIES
+/**
+ * GET /movies
+ * Fetches and returns a list of movies.
+ * @name GET/movies
+ * @function
+ * @memberof module:express.Router
+ * @inner
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get('/movies', async (req, res) => {
 	const data = await getMovies();
 	const movies = await parseMovies(data);
 	res.json(movies);
 });
 
-// GET -> MOVIE GENRES
+/**
+ * GET /movieGenres
+ * Fetches and returns a list of movie genres.
+ * @name GET/movieGenres
+ * @function
+ * @memberof module:express.Router
+ * @inner
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get('/movieGenres', async (req, res) => {
 	const movieGenres = await getMovieGenres();
 	res.json(movieGenres);
 });
 
-// GET -> MOVIES CATEGORIZED BY GENRES
+/**
+ * GET /m
+ * Fetches, parses, and categorizes movies by genres.
+ * @name GET/m
+ * @function
+ * @memberof module:express.Router
+ * @inner
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get('/m', async (req, res) => {
 	const raw_data = await getMovies();
 	const parsed_data = await parseMovies(raw_data);
@@ -61,7 +82,16 @@ app.get('/m', async (req, res) => {
 	res.json(categorized_data);
 });
 
-// POST -> MOVIE ALGORITHM
+/**
+ * POST /MovieAlgorithm
+ * Processes movie data using a specified algorithm and returns the results.
+ * @name POST/MovieAlgorithm
+ * @function
+ * @memberof module:express.Router
+ * @inner
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.post('/MovieAlgorithm', async (req, res) => {
 	if (!req.body || !Array.isArray(req.body)) {
 		return res.status(400).json({ error: 'Invalid input' });
@@ -71,25 +101,21 @@ app.post('/MovieAlgorithm', async (req, res) => {
 	res.json(parsedData);
 });
 
-// POST -> HOME MOVIE
+/**
+ * POST /home/movies
+ * Fetches and returns a list of top categories and their associated movies for the home page.
+ * @name POST/home/movies
+ * @function
+ * @memberof module:express.Router
+ * @inner
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.post('/home/movies', async (req, res) => {
 	const requestBody = req.body;
 	const topCategories = await getTopCategories(requestBody, 5);
-  const parsedMovies = await getHomeMovies(topCategories);
+	const parsedMovies = await getHomeMovies(topCategories);
 	res.json(parsedMovies);
-});
-
-// GET -> SERIES
-app.get('/series', async (req, res) => {
-	const data = await getSeries();
-	const series = await parseSeries(data);
-	res.json(series);
-});
-
-// GET -> SERIE GENRES
-app.get('/serieGenres', async (req, res) => {
-	const serieGenres = await getSerieGenres();
-	res.json(serieGenres);
 });
 
 if (process.env.NODE_ENV !== 'test') {

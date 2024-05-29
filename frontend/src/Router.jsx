@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
+
 import { useState, useEffect } from 'react';
-import MovieInitializer from './MovieInitializer';
-import MovieAlgorithm from './MovieAlgorithm';
-import MovieHome from './MovieHome';
-import UserMovieList from './UserMovieList';
+import Initializer from './components/Initializer.jsx';
+import Algorithm from './components/Algorithm.jsx';
+import Home from './components/Home.jsx';
+import WelcomePage from './components/WelcomePage.jsx';
 
 function Router() {
 	const [display, setDisplay] = useState('');
@@ -18,6 +19,8 @@ function Router() {
 		const savedDisplay = localStorage.getItem('currentPage');
 		if (savedDisplay) {
 			setDisplay(savedDisplay);
+		} else {
+			setDisplay('welcome');
 		}
 		const genres = localStorage.getItem('movieGenres');
 		if (genres) {
@@ -39,61 +42,60 @@ function Router() {
 		setSelectionCount(count);
 	};
 
+	const cleanStorage = () => {
+		localStorage.removeItem('movieGenres');
+		localStorage.removeItem('myList');
+    localStorage.removeItem('currentPage');
+		localStorage.removeItem('selectionCounter');
+		setStoredGenres([]);
+		setMyList([]);
+		setDisplay('welcome');
+	};
+
 	return (
 		<div className="app-container">
 			{!storedGenres.length ? (
 				<>
 					<button
-						className=" text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('movies')}>
-						Display Movies
-					</button>
-					<button
-						className=" text-white font-bold py-2 px-4 top button"
-						onClick={() => setDisplay('series')}>
-						Display Series
-					</button>
-					<button
-						onClick={() => setDisplay('')}
+						onClick={() => cleanStorage()}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Clean Storage
 					</button>
 				</>
 			) : (
 				<>
 					<button
 						onClick={() => setDisplay('algorithm')}
-						className=" text-white font-bold py-2 px-4 top button">
+						className="text-white font-bold py-2 px-4 top button">
 						Movie Algorithm
 					</button>
-
 					<button
 						onClick={() => setDisplay('home')}
 						className="text-white font-bold py-2 px-4 top button">
 						Movies
 					</button>
 					<button
-						onClick={() => setDisplay('')}
+						onClick={() => setDisplay('welcome')}
 						className="text-white font-bold py-2 px-4 top button">
-						Welcome Page
+						Welcome
+					</button>
+					<button
+						onClick={() => cleanStorage()}
+						className="text-white font-bold py-2 px-4 top button">
+						Clean Storage
 					</button>
 				</>
 			)}
 
 			{display === 'movies' && (
-				<MovieInitializer
+				<Initializer
 					onGenresSubmission={handleGenresSubmission}
 					onUpdateSelectionCount={updateSelectionCount}
 				/>
 			)}
-			{display === 'series' && (
-				<MovieInitializer
-					onGenresSubmission={handleGenresSubmission}
-					onUpdateSelectionCount={updateSelectionCount}
-				/>
-			)}
-			{display === 'algorithm' && <MovieAlgorithm genres={storedGenres} />}
-			{display === 'home' && <MovieHome genres={storedGenres} />}
+			{display === 'algorithm' && <Algorithm genres={storedGenres} />}
+			{display === 'home' && <Home genres={storedGenres} />}
+			{display === 'welcome' && <WelcomePage setDisplay={setDisplay} />}
 		</div>
 	);
 }
