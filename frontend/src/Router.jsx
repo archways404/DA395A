@@ -53,7 +53,7 @@ function Router() {
 	};
 
 	return (
-		<div className="app-container">
+		<div className="app-container min-w-[360px]">
 			{!storedGenres.length ? (
 				<>
 					<button

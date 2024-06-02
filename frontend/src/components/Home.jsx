@@ -139,9 +139,9 @@ function Home({ genres }) {
 					{Object.keys(genreMovies).map((genre) => (
 						<div
 							key={genre}
-							className="mb-8 categorybox">
+							className="mb-8 categorybox overflow-hidden">
 							<h2 className="text-xl font-semibold mb-4">{genre}:</h2>
-							<div className="grid grid-cols-5 gap-4">
+							<div className="grid grid-flow-col auto-cols-64 gap-4 overflow-x-scroll 2xl:grid-cols-5 2xl:grid-rows-auto 2xl:overflow-x-hidden 2xl:grid-flow-row">
 								{(expandedGenre === genre
 									? genreMovies[genre]
 									: genreMovies[genre]
@@ -150,7 +150,7 @@ function Home({ genres }) {
 								).map((movie) => (
 									<div
 										key={movie.originalTitle}
-										className="col-span-1 relative">
+										className="relative overflow-hidden w-64">
 										<img
 											src={movie.posterPath}
 											alt={movie.originalTitle}
@@ -160,8 +160,10 @@ function Home({ genres }) {
 											<h3 className="text-center pb-10 font-bold title">
 												{movie.originalTitle}
 											</h3>
-											<p className="text-xs">{movie.overview}</p>
-											<p className="text-m pt-10 italic year">
+											<p className="text-xs block whitespace-normal">
+												{movie.overview}
+											</p>
+											<p className="text-m pt-2 italic year">
 												{movie.releaseDate.slice(0, 4)}
 											</p>
 											{isInMyList(movie) ? (
@@ -173,7 +175,7 @@ function Home({ genres }) {
 											) : (
 												<button
 													onClick={() => addToMyList(movie)}
-													className="mt-2 py-1 px-2 bg-green-500 rounded text-white">
+													className="mt-2 py-1 px-2 bg-green-500 rounded text-white z-10">
 													Add to My List
 												</button>
 											)}

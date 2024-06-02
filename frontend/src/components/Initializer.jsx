@@ -141,7 +141,7 @@ function Initializer({ onGenresSubmission, onUpdateSelectionCount }) {
 								<img
 									src={movie.posterPath}
 									alt={movie.originalTitle}
-									className="w-1/2 h-auto mx-auto"
+									className="min-w-36 w-1/2 h-auto mx-auto"
 								/>
 								<p className="text-center text-white text-lg my-2">
 									{movie.originalTitle}
