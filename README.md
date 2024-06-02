@@ -24,19 +24,31 @@ This project implements a movie recommendation system where users can select the
 
 1. Clone the repository to your local machine.
 
-1. Install dependencies for both the backend and frontend:
+2. Install dependencies for both the backend and frontend:
 
-    ```
+    ```sh
     npm install
     ```
 
-1. Start the development server:
+3. Create ```.env``` file in the ```backend``` root folder and insert the api key:
+
+    ```sh
+    cd backend
+    touch .env
+    ```
 
     ```
+    // In the .env file:
+    API_KEY=[YOUR_API_KEY]
+    ```
+
+4. Start the development server:
+
+    ```sh
     npm run dev
     ```
 
-1. Access the application at [localhost:5173](http://localhost:5173) in your web browser.
+5. Access the application at [localhost:5173](http://localhost:5173) in your web browser.
 
 ## Documentation
 
